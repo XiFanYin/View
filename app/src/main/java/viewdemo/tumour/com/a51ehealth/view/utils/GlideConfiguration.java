@@ -20,6 +20,7 @@ import com.bumptech.glide.module.AppGlideModule;
 
 
 /**
+ * http://www.jb51.net/article/121174.htm
  */
 @GlideModule
 public class GlideConfiguration extends AppGlideModule {

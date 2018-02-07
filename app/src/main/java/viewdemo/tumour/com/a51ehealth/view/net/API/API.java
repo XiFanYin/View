@@ -15,6 +15,7 @@ import retrofit2.http.Part;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 import viewdemo.tumour.com.a51ehealth.view.bean.LoginBean;
+import viewdemo.tumour.com.a51ehealth.view.bean.Patient;
 import viewdemo.tumour.com.a51ehealth.view.bean.UpImage;
 
 /**
@@ -40,6 +41,12 @@ public interface API {
     @POST("")
     Observable<ResponseBody> downloadFile(@Url String url);
 
+
+
+
+    @FormUrlEncoded
+    @POST("getMyPatientList.html")
+    Observable<Patient> getPatientInfo(@Field("page") int page, @Field("rows") int rows);
 
 
 }

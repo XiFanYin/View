@@ -23,16 +23,22 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import io.rx_cache2.DynamicKey;
+import io.rx_cache2.EvictDynamicKey;
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import viewdemo.tumour.com.a51ehealth.view.base.BaseActivity;
 import viewdemo.tumour.com.a51ehealth.view.bean.LoginBean;
+import viewdemo.tumour.com.a51ehealth.view.bean.Patient;
 import viewdemo.tumour.com.a51ehealth.view.bean.UpImage;
+import viewdemo.tumour.com.a51ehealth.view.cache.CacheProviderUtils;
+import viewdemo.tumour.com.a51ehealth.view.cache.Provider;
 import viewdemo.tumour.com.a51ehealth.view.net.API.API;
 import viewdemo.tumour.com.a51ehealth.view.net.Observer.BaseObserver;
 import viewdemo.tumour.com.a51ehealth.view.net.RetrofitUtil;
 import viewdemo.tumour.com.a51ehealth.view.net.Schedulers.RxSchedulers;
 import viewdemo.tumour.com.a51ehealth.view.net.UpFile.UpFileUtils;
+import viewdemo.tumour.com.a51ehealth.view.net.utils.NetworkDetector;
 import viewdemo.tumour.com.a51ehealth.view.utils.GlideApp;
 import viewdemo.tumour.com.a51ehealth.view.utils.SPUtils;
 
@@ -157,7 +163,6 @@ public class MainActivity extends BaseActivity {
                 });
     }
 
-
     private void method3() {
 
         RetrofitUtil
@@ -233,6 +238,25 @@ public class MainActivity extends BaseActivity {
     }
 
     private void method4() {
+
+
+        CacheProviderUtils
+                .getInstance()
+                .using(Provider.class)
+                .getPatientInfo(RetrofitUtil
+                        .getInstance()
+                        .create(API.class)
+                        .getPatientInfo(1, 2), new DynamicKey("eee"), new EvictDynamicKey(NetworkDetector.isNetworkReachable()))
+                .compose(RxSchedulers.io_main())
+                .compose(bindUntilEvent(ActivityEvent.DESTROY))
+                .subscribe(new BaseObserver<Patient>() {
+                    @Override
+                    public void onNext(Patient patient) {
+                        tv.setText(new Gson().toJson(patient) + "token必须保存起来，这样在上传图片和下载图片的时候，请求头里边需要放入的参数");
+
+                        Log.e("rrrrrrrrr", new Gson().toJson(patient));
+                    }
+                });
 
 
     }

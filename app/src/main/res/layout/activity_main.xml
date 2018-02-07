@@ -37,8 +37,10 @@
             android:layout_height="wrap_content"
             android:text="没网显示缓存" />
 
-    </LinearLayout>
 
+
+
+    </LinearLayout>
 
 
     <TextView

@@ -54,6 +54,7 @@ public class MainActivity extends BaseActivity {
     private ProgressDialog pd;
     private File file = new File(Environment.getExternalStorageDirectory().getPath(), "wisdom_doctor.apk");
 
+
     @Override
     public int getId() {
         return R.layout.activity_main;
@@ -119,6 +120,8 @@ public class MainActivity extends BaseActivity {
                 method4();
 
                 break;
+
+
 
         }
 
@@ -254,7 +257,7 @@ public class MainActivity extends BaseActivity {
                     public void onNext(Patient patient) {
                         tv.setText(new Gson().toJson(patient) + "token必须保存起来，这样在上传图片和下载图片的时候，请求头里边需要放入的参数");
 
-                        Log.e("rrrrrrrrr", new Gson().toJson(patient));
+                        Log.e("BeanJson3", new Gson().toJson(patient));
                     }
                 });
 

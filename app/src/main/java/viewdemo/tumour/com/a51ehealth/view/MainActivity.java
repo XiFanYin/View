@@ -2,6 +2,8 @@ package viewdemo.tumour.com.a51ehealth.view;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
@@ -53,6 +55,7 @@ public class MainActivity extends BaseActivity {
     private ImageView image;
     private ProgressDialog pd;
     private File file = new File(Environment.getExternalStorageDirectory().getPath(), "wisdom_doctor.apk");
+    private View btn5;
 
 
     @Override
@@ -67,6 +70,7 @@ public class MainActivity extends BaseActivity {
         btn2 = findViewById(R.id.btn2);
         btn3 = findViewById(R.id.btn3);
         btn4 = findViewById(R.id.btn4);
+        btn5 = findViewById(R.id.btn5);
         tv = findViewById(R.id.tv);
         image = findViewById(R.id.image);
 
@@ -78,6 +82,7 @@ public class MainActivity extends BaseActivity {
         btn2.setOnClickListener(this);
         btn3.setOnClickListener(this);
         btn4.setOnClickListener(this);
+        btn5.setOnClickListener(this);
     }
 
     @Override
@@ -121,6 +126,16 @@ public class MainActivity extends BaseActivity {
 
                 break;
 
+            case R.id.btn5:
+
+                GlideApp
+                        .with(this)
+                        .load("http://img3.imgtn.bdimg.com/it/u=3298532946,3974059585&fm=27&gp=0.jpg")
+                        .circleCrop()
+                        .placeholder(R.mipmap.ic_launcher)
+                        .into(image);
+
+                break;
 
 
         }

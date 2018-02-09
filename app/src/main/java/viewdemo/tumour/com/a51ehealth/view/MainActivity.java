@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
@@ -54,6 +55,8 @@ import viewdemo.tumour.com.a51ehealth.view.net.UpFile.UpFileUtils;
 import viewdemo.tumour.com.a51ehealth.view.net.utils.NetworkDetector;
 import viewdemo.tumour.com.a51ehealth.view.utils.SPUtils;
 import viewdemo.tumour.com.a51ehealth.view.utils.glide.GlideApp;
+import viewdemo.tumour.com.a51ehealth.view.utils.glide.ImageProgressInterceptor;
+import viewdemo.tumour.com.a51ehealth.view.utils.glide.ImageProgressListener;
 
 public class MainActivity extends BaseActivity {
 
@@ -67,6 +70,8 @@ public class MainActivity extends BaseActivity {
     private ProgressDialog pd;
     private File file = new File(Environment.getExternalStorageDirectory().getPath(), "wisdom_doctor.apk");
     private View btn5;
+
+    private String url = "http://img3.imgtn.bdimg.com/it/u=3298532946,3974059585&fm=27&gp=0.jpg";
 
 
     @Override
@@ -139,7 +144,12 @@ public class MainActivity extends BaseActivity {
 
             case R.id.btn5:
 
-
+                ImageProgressInterceptor.addListener(url, new ImageProgressListener() {
+                    @Override
+                    public void onProgress(int progress) {
+                        Log.e("rrrrrrrr", progress + "");
+                    }
+                });
                 GlideApp
                         .with(this)
                         .load("http://img3.imgtn.bdimg.com/it/u=3298532946,3974059585&fm=27&gp=0.jpg")

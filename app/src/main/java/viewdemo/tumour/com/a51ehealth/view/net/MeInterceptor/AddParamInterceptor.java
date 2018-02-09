@@ -31,18 +31,19 @@ public abstract class AddParamInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         //获取请求对象
         Request originRequest = chain.request();
-        //创建一个新的请求对象
+        //获取原本的请求对象
         Request.Builder newRequest = originRequest.newBuilder();
-        //创建一个新的请求头对象
+        //获取原本的请求头对象
         Headers.Builder newHeaderBuilder = originRequest.headers().newBuilder();
         //获取外部传递过来的头参数
         Map<String, String> headerMap = getHeaderMap();
         //如果外部传递了请求头信息
         if (headerMap != null && !headerMap.isEmpty()) {
-            //循环遍历，添加到新的请求对象头中
+            //循环遍历，添加到原本的的请求头对象中
             for (Map.Entry<String, String> entry : headerMap.entrySet()) {
                 newHeaderBuilder.add(entry.getKey(), entry.getValue());
             }
+            //然后放入请求对象中
             newRequest.headers(newHeaderBuilder.build());
         }
         //判断请求方式是否是GET

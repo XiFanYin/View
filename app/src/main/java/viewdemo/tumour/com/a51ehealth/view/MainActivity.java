@@ -11,6 +11,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.load.MultiTransformation;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.gson.Gson;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.trello.rxlifecycle2.android.ActivityEvent;
@@ -27,6 +31,13 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.rx_cache2.DynamicKey;
 import io.rx_cache2.EvictDynamicKey;
+import jp.wasabeef.glide.transformations.BlurTransformation;
+import jp.wasabeef.glide.transformations.CropSquareTransformation;
+import jp.wasabeef.glide.transformations.CropTransformation;
+import jp.wasabeef.glide.transformations.GrayscaleTransformation;
+import jp.wasabeef.glide.transformations.MaskTransformation;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+import jp.wasabeef.glide.transformations.internal.Utils;
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import viewdemo.tumour.com.a51ehealth.view.base.BaseActivity;
@@ -41,8 +52,8 @@ import viewdemo.tumour.com.a51ehealth.view.net.RetrofitUtil;
 import viewdemo.tumour.com.a51ehealth.view.net.Schedulers.RxSchedulers;
 import viewdemo.tumour.com.a51ehealth.view.net.UpFile.UpFileUtils;
 import viewdemo.tumour.com.a51ehealth.view.net.utils.NetworkDetector;
-import viewdemo.tumour.com.a51ehealth.view.utils.GlideApp;
 import viewdemo.tumour.com.a51ehealth.view.utils.SPUtils;
+import viewdemo.tumour.com.a51ehealth.view.utils.glide.GlideApp;
 
 public class MainActivity extends BaseActivity {
 
@@ -128,11 +139,13 @@ public class MainActivity extends BaseActivity {
 
             case R.id.btn5:
 
+
                 GlideApp
                         .with(this)
                         .load("http://img3.imgtn.bdimg.com/it/u=3298532946,3974059585&fm=27&gp=0.jpg")
-                        .circleCrop()
-                        .placeholder(R.mipmap.ic_launcher)
+                        .skipMemoryCache(true)//进制内存缓存
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)//进制磁盘缓存
+                        .placeholder(R.mipmap.ic_launcher)//占位符
                         .into(image);
 
                 break;

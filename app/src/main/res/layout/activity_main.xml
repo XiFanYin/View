@@ -38,16 +38,16 @@
             android:text="没网显示缓存" />
 
 
-        <Button
-            android:id="@+id/btn5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="图片加载" />
+
 
 
     </LinearLayout>
 
-
+    <Button
+        android:id="@+id/btn5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="图片加载" />
     <TextView
         android:id="@+id/tv"
         android:layout_width="match_parent"
@@ -56,8 +56,9 @@
 
     <ImageView
         android:id="@+id/image"
-        android:layout_width="300dp"
-        android:layout_height="300dp" />
+        android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:layout_height="600dp" />
 
 
 </LinearLayout>

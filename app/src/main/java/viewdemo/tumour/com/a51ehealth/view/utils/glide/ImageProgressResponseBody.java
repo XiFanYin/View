@@ -3,6 +3,7 @@ package viewdemo.tumour.com.a51ehealth.view.utils.glide;
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.Map;
 
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
@@ -13,7 +14,6 @@ import okio.Okio;
 import okio.Source;
 
 /**
- *
  * http://blog.csdn.net/guolin_blog/article/details/78357251
  * Created by Administrator on 2018/2/9.
  * 继承了ResponseBody类之后一定要重写contentType()、
@@ -27,6 +27,7 @@ public class ImageProgressResponseBody extends ResponseBody {
     private ResponseBody responseBody;
 
     private ImageProgressListener listener;
+
 
     public ImageProgressResponseBody(String url, ResponseBody responseBody) {
         this.responseBody = responseBody;
@@ -80,6 +81,8 @@ public class ImageProgressResponseBody extends ResponseBody {
                 listener.onProgress(progress);
             }
             if (listener != null && totalBytesRead == fullLength) {
+                String url = getKey(ImageProgressInterceptor.LISTENER_MAP, listener);
+                ImageProgressInterceptor.removeListener(url);
                 listener = null;
             }
             currentProgress = progress;
@@ -87,4 +90,15 @@ public class ImageProgressResponseBody extends ResponseBody {
         }
     }
 
+
+    //根据map的value获取map的key
+    private synchronized String getKey(Map<String, ImageProgressListener> map, ImageProgressListener value) {
+        String key = "";
+        for (Map.Entry<String, ImageProgressListener> entry : map.entrySet()) {
+            if (value.equals(entry.getValue())) {
+                key = entry.getKey();
+            }
+        }
+        return key;
+    }
 }

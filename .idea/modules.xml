@@ -4,7 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/View.iml" filepath="$PROJECT_DIR$/.idea/View.iml" />
       <module fileurl="file://G:\net\View\View.iml" filepath="G:\net\View\View.iml" />
+      <module fileurl="file://F:\hencoder\View\.idea\View.iml" filepath="F:\hencoder\View\.idea\View.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://F:\hencoder\View\app\app.iml" filepath="F:\hencoder\View\app\app.iml" />
     </modules>
   </component>
 </project>

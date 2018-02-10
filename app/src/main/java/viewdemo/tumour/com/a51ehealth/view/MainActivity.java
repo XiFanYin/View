@@ -144,15 +144,13 @@ public class MainActivity extends BaseActivity {
 
             case R.id.btn5:
 
-                ImageProgressInterceptor.addListener(url, new ImageProgressListener() {
-                    @Override
-                    public void onProgress(int progress) {
-                        Log.e("rrrrrrrr", progress + "");
-                    }
-                });
+
                 GlideApp
                         .with(this)
-                        .load("http://img3.imgtn.bdimg.com/it/u=3298532946,3974059585&fm=27&gp=0.jpg")
+                        .load(url)
+                        .imageProgressListener(url, progress -> {
+                            Log.e("rrrrrrrrrrrr", "rrr" + progress);
+                        })
                         .skipMemoryCache(true)//进制内存缓存
                         .diskCacheStrategy(DiskCacheStrategy.NONE)//进制磁盘缓存
                         .placeholder(R.mipmap.ic_launcher)//占位符

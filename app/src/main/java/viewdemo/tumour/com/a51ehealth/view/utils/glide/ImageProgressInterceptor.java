@@ -1,5 +1,7 @@
 package viewdemo.tumour.com.a51ehealth.view.utils.glide;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +35,7 @@ public class ImageProgressInterceptor implements Interceptor {
     /*移除监听的工具类*/
     public static void removeListener(String url) {
         LISTENER_MAP.remove(url);
+        Log.e("rrrrrrrrrrrr","remove");
     }
 
 

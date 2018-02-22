@@ -52,9 +52,6 @@
         android:layout_height="wrap_content" />
 
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/image"
@@ -62,13 +59,7 @@
             android:layout_height="600dp"
             android:scaleType="centerCrop" />
 
-        <viewdemo.tumour.com.a51ehealth.view.utils.glide.ImageLoadingView
-            android:id="@+id/loadingview"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_centerInParent="true" />
 
-    </RelativeLayout>
 
 
 </LinearLayout>

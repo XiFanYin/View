@@ -56,7 +56,6 @@ public class MainActivity extends BaseActivity {
     private ProgressDialog pd;
     private File file = new File(Environment.getExternalStorageDirectory().getPath(), "wisdom_doctor.apk");
     private View btn5;
-    private ImageLoadingView loadingview;
     private String url = "http://img1.3lian.com/2015/w7/90/d/1.jpg";
 
 
@@ -73,7 +72,6 @@ public class MainActivity extends BaseActivity {
         btn3 = findViewById(R.id.btn3);
         btn4 = findViewById(R.id.btn4);
         btn5 = findViewById(R.id.btn5);
-        loadingview = findViewById(R.id.loadingview);
         tv = findViewById(R.id.tv);
         image = findViewById(R.id.image);
 
@@ -131,16 +129,25 @@ public class MainActivity extends BaseActivity {
 
             case R.id.btn5:
 
-
+                /**
+                 * 待解决问题：
+                 *
+                 * 1.如果有小图，可以让加载大图的时候显示小图，没有小图的时候，再显示灰色背景，切背景可以有外部任意指定
+                 * 2.让其用的时候，布局更加舒服
+                 *
+                 */
+                ImageLoadingView loadingView = new ImageLoadingView(this);
+                loadingView.setTargetView(image);
                 GlideApp
                         .with(this)
                         .load(url)
                         .imageProgressListener(url, progress -> {
-                            loadingview.setProgress(progress);
+                            loadingView.setProgress(progress);
                         })
                         .skipMemoryCache(true)//进制内存缓存
                         .diskCacheStrategy(DiskCacheStrategy.NONE)//进制磁盘缓存
                         .into(image);
+
 
                 break;
 

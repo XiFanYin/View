@@ -29,14 +29,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-/**
- * @function ImageLoadingView
- * @auther: Created by yinglan
- * @time: 16/8/24
- */
+
 public class ImageLoadingView extends View {
 
-    private final String TAG = ImageLoadingView.class.getSimpleName();
     private Paint mPaint1;
     private Paint mPaint2;
     private Context mContext;
@@ -44,6 +39,13 @@ public class ImageLoadingView extends View {
     private float interval;
     private float radius;
     private int type = 1;
+
+
+    public static class ViewType {
+        public final static int VIDEO = 0;
+        public final static int IMAGE = 1;
+    }
+
 
     public ImageLoadingView(Context context) {
         this(context, null);
@@ -58,51 +60,49 @@ public class ImageLoadingView extends View {
         initView(context, attrs);
     }
 
-    public static class ViewType {
-        public final static int VIDEO = 0;
-        public final static int IMAGE = 1;
-    }
 
     private void initView(Context context, AttributeSet attrs) {
         this.mContext = context;
-        if (null == attrs) {
+        if (null == attrs) {//这里表示是代码new出来的对象，而非布局中find的对象
+            //告诉父布局，我的位置要是这样的的参数坐标和大小
             if (!(getLayoutParams() instanceof FrameLayout.LayoutParams)) {
-                FrameLayout.LayoutParams layoutParams =
-                        new FrameLayout.LayoutParams(
-                                dip2Px(50),
-                                dip2Px(50),
-                                Gravity.CENTER);
+                FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(dip2Px(50), dip2Px(50), Gravity.CENTER);
                 setLayoutParams(layoutParams);
             }
         }
+        //创建画笔1，
         mPaint1 = new Paint();
+        //设置抗锯齿
         mPaint1.setAntiAlias(true);
+        //设置画笔颜色
         mPaint1.setColor(Color.WHITE);
+        //创建画笔2
         mPaint2 = new Paint();
+        //设置抗锯齿
         mPaint2.setAntiAlias(true);
+        //设置为画线模式
         mPaint2.setStyle(Paint.Style.STROKE);
+        //设置画笔颜色
         mPaint2.setColor(Color.WHITE);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        //初始化圆的半径
         radius = getWidth() >= getHeight() ? getHeight() : getWidth();
+        //初始化间隔
         interval = (float) (radius * 0.06);
+        //初始化线粗
         mPaint2.setStrokeWidth(interval / 3);
+
         RectF localRect = new RectF(getWidth() / 2 - radius / 2 + interval, getHeight() / 2 - radius / 2 + interval, getWidth() / 2 + radius / 2 - interval, getHeight() / 2 + radius / 2 - interval);
+
         float f1 = (float) (percent * 360);
-        if (this.type == ViewType.VIDEO && percent == 1.0) {
-            Path path = new Path();
-            path.moveTo(getWidth() / 2 - radius * 0.7f / 6, (float) (getHeight() / 2 + 1.732 * radius / 6));// 此点为多边形的起点
-            path.lineTo(getWidth() / 2 + radius / 3, getHeight() / 2);
-            path.lineTo(getWidth() / 2 - radius * 0.7f / 6, (float) (getHeight() / 2 - 1.732 * radius / 6));
-            path.close();
-            canvas.drawPath(path, mPaint1);
-        } else {
-            canvas.drawArc(localRect, -90, f1, true, mPaint1);
-        }
+        //开始画椭圆
+        canvas.drawArc(localRect, -90, f1, true, mPaint1);
         canvas.save();
+        //开始画圆
         canvas.drawCircle(getWidth() / 2, getHeight() / 2, radius / 2 - interval / 3, mPaint2);
         canvas.restore();
     }

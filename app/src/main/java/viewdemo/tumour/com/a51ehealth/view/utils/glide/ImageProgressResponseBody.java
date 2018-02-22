@@ -5,6 +5,10 @@ import android.util.Log;
 import java.io.IOException;
 import java.util.Map;
 
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import okio.Buffer;
@@ -12,6 +16,7 @@ import okio.BufferedSource;
 import okio.ForwardingSource;
 import okio.Okio;
 import okio.Source;
+import viewdemo.tumour.com.a51ehealth.view.net.Schedulers.RxSchedulers;
 
 /**
  * http://blog.csdn.net/guolin_blog/article/details/78357251
@@ -58,9 +63,9 @@ public class ImageProgressResponseBody extends ResponseBody {
 
     private class ProgressSource extends ForwardingSource {
 
-        long totalBytesRead = 0;
+        double totalBytesRead = 0;
 
-        int currentProgress;
+        double currentProgress;
 
         ProgressSource(Source source) {
             super(source);
@@ -75,15 +80,22 @@ public class ImageProgressResponseBody extends ResponseBody {
             } else {
                 totalBytesRead += bytesRead;
             }
-            int progress = (int) (100f * totalBytesRead / fullLength);
+            double progress = totalBytesRead / fullLength;
             Log.d("image_progress", "download progress is " + progress);
             if (listener != null && progress != currentProgress) {
-                listener.onProgress(progress);
+                Observable.just(progress)
+                        .observeOn(AndroidSchedulers.mainThread())//指定doOnTerminate的线程
+                        .subscribe(new Consumer<Double>() {
+                            @Override
+                            public void accept(Double progress) throws Exception {
+                                listener.onProgress(progress);
+                            }
+                        });
             }
             if (listener != null && totalBytesRead == fullLength) {
                 String url = getKey(ImageProgressInterceptor.LISTENER_MAP, listener);
                 ImageProgressInterceptor.removeListener(url);
-                listener = null;
+
             }
             currentProgress = progress;
             return bytesRead;

@@ -8,6 +8,6 @@ package viewdemo.tumour.com.a51ehealth.view.utils.glide;
 
 public interface ImageProgressListener {
 
-    void onProgress(int progress);
+    void onProgress(double progress);
 
 }

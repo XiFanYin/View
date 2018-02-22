@@ -2,9 +2,6 @@ package viewdemo.tumour.com.a51ehealth.view;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.media.Image;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
@@ -12,10 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.load.MultiTransformation;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.gson.Gson;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.trello.rxlifecycle2.android.ActivityEvent;
@@ -32,13 +26,6 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.rx_cache2.DynamicKey;
 import io.rx_cache2.EvictDynamicKey;
-import jp.wasabeef.glide.transformations.BlurTransformation;
-import jp.wasabeef.glide.transformations.CropSquareTransformation;
-import jp.wasabeef.glide.transformations.CropTransformation;
-import jp.wasabeef.glide.transformations.GrayscaleTransformation;
-import jp.wasabeef.glide.transformations.MaskTransformation;
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
-import jp.wasabeef.glide.transformations.internal.Utils;
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import viewdemo.tumour.com.a51ehealth.view.base.BaseActivity;
@@ -55,8 +42,7 @@ import viewdemo.tumour.com.a51ehealth.view.net.UpFile.UpFileUtils;
 import viewdemo.tumour.com.a51ehealth.view.net.utils.NetworkDetector;
 import viewdemo.tumour.com.a51ehealth.view.utils.SPUtils;
 import viewdemo.tumour.com.a51ehealth.view.utils.glide.GlideApp;
-import viewdemo.tumour.com.a51ehealth.view.utils.glide.ImageProgressInterceptor;
-import viewdemo.tumour.com.a51ehealth.view.utils.glide.ImageProgressListener;
+import viewdemo.tumour.com.a51ehealth.view.utils.glide.ImageLoadingView;
 
 public class MainActivity extends BaseActivity {
 
@@ -70,8 +56,8 @@ public class MainActivity extends BaseActivity {
     private ProgressDialog pd;
     private File file = new File(Environment.getExternalStorageDirectory().getPath(), "wisdom_doctor.apk");
     private View btn5;
-
-    private String url = "http://img3.imgtn.bdimg.com/it/u=3298532946,3974059585&fm=27&gp=0.jpg";
+    private ImageLoadingView loadingview;
+    private String url = "http://img1.3lian.com/2015/w7/90/d/1.jpg";
 
 
     @Override
@@ -87,6 +73,7 @@ public class MainActivity extends BaseActivity {
         btn3 = findViewById(R.id.btn3);
         btn4 = findViewById(R.id.btn4);
         btn5 = findViewById(R.id.btn5);
+        loadingview = findViewById(R.id.loadingview);
         tv = findViewById(R.id.tv);
         image = findViewById(R.id.image);
 
@@ -149,11 +136,10 @@ public class MainActivity extends BaseActivity {
                         .with(this)
                         .load(url)
                         .imageProgressListener(url, progress -> {
-                            Log.e("rrrrrrrrrrrr", "rrr" + progress);
+                            loadingview.setProgress(progress);
                         })
                         .skipMemoryCache(true)//进制内存缓存
                         .diskCacheStrategy(DiskCacheStrategy.NONE)//进制磁盘缓存
-                        .placeholder(R.mipmap.ic_launcher)//占位符
                         .into(image);
 
                 break;

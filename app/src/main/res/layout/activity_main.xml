@@ -38,9 +38,6 @@
             android:text="没网显示缓存" />
 
 
-
-
-
     </LinearLayout>
 
     <Button
@@ -48,17 +45,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="图片加载" />
+
     <TextView
         android:id="@+id/tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
 
-    <ImageView
-        android:id="@+id/image"
-        android:scaleType="centerCrop"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="600dp" />
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="600dp"
+            android:scaleType="centerCrop" />
+
+        <viewdemo.tumour.com.a51ehealth.view.utils.glide.ImageLoadingView
+            android:id="@+id/loadingview"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
 
 
 </LinearLayout>

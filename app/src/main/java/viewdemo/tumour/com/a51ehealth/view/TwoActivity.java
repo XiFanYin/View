@@ -64,8 +64,8 @@ public class TwoActivity extends BaseActivity {
         GlideApp.with(this)
                 .load(bigUrl)
                 .imageProgressListener(bigUrl, image2)
-                .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+//                .skipMemoryCache(true)
+//                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(image2);
 
 

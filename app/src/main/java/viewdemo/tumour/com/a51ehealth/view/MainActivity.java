@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -143,7 +145,9 @@ public class MainActivity extends BaseActivity {
                 Intent intent = new Intent(this, TwoActivity.class);
                 intent.putExtra("bigUrl", bigUrl);
                 intent.putExtra("smallUrl", smallUrl);
-                startActivity(intent);
+                ActivityOptionsCompat compat = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation(MainActivity.this, image, getString(R.string.transition_image));
+                ActivityCompat.startActivity(MainActivity.this, intent, compat.toBundle());
                 break;
 
 

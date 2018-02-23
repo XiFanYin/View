@@ -2,6 +2,7 @@ package viewdemo.tumour.com.a51ehealth.view;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
@@ -9,7 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.trello.rxlifecycle2.android.ActivityEvent;
@@ -42,7 +43,6 @@ import viewdemo.tumour.com.a51ehealth.view.net.UpFile.UpFileUtils;
 import viewdemo.tumour.com.a51ehealth.view.net.utils.NetworkDetector;
 import viewdemo.tumour.com.a51ehealth.view.utils.SPUtils;
 import viewdemo.tumour.com.a51ehealth.view.utils.glide.GlideApp;
-import viewdemo.tumour.com.a51ehealth.view.utils.glide.ImageLoadingView;
 
 public class MainActivity extends BaseActivity {
 
@@ -56,8 +56,9 @@ public class MainActivity extends BaseActivity {
     private ProgressDialog pd;
     private File file = new File(Environment.getExternalStorageDirectory().getPath(), "wisdom_doctor.apk");
     private View btn5;
-    private String url = "http://img1.3lian.com/2015/w7/90/d/1.jpg";
 
+    public final String bigUrl = "https://raw.githubusercontent.com/sfsheng0322/GlideImageView/master/screenshot/girl.jpg";
+    public final String smallUrl = "https://raw.githubusercontent.com/sfsheng0322/GlideImageView/master/screenshot/girl_thumbnail.jpg";
 
     @Override
     public int getId() {
@@ -84,6 +85,7 @@ public class MainActivity extends BaseActivity {
         btn3.setOnClickListener(this);
         btn4.setOnClickListener(this);
         btn5.setOnClickListener(this);
+        image.setOnClickListener(this);
     }
 
     @Override
@@ -129,26 +131,19 @@ public class MainActivity extends BaseActivity {
 
             case R.id.btn5:
 
-                /**
-                 * 待解决问题：
-                 *
-                 * 1.如果有小图，可以让加载大图的时候显示小图，没有小图的时候，再显示灰色背景，切背景可以有外部任意指定
-                 * 2.让其用的时候，布局更加舒服
-                 *
-                 */
-                ImageLoadingView loadingView = new ImageLoadingView(this);
-                loadingView.setTargetView(image);
-                GlideApp
-                        .with(this)
-                        .load(url)
-                        .imageProgressListener(url, progress -> {
-                            loadingView.setProgress(progress);
-                        })
-                        .skipMemoryCache(true)//进制内存缓存
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)//进制磁盘缓存
+                Glide.with(this)
+                        .load(smallUrl)
                         .into(image);
 
+                break;
 
+
+            case R.id.image:
+
+                Intent intent = new Intent(this, TwoActivity.class);
+                intent.putExtra("bigUrl", bigUrl);
+                intent.putExtra("smallUrl", smallUrl);
+                startActivity(intent);
                 break;
 
 

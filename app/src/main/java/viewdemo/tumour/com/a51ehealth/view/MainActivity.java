@@ -3,9 +3,15 @@ package viewdemo.tumour.com.a51ehealth.view;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.media.Image;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -43,6 +49,8 @@ import viewdemo.tumour.com.a51ehealth.view.net.RetrofitUtil;
 import viewdemo.tumour.com.a51ehealth.view.net.Schedulers.RxSchedulers;
 import viewdemo.tumour.com.a51ehealth.view.net.UpFile.UpFileUtils;
 import viewdemo.tumour.com.a51ehealth.view.net.utils.NetworkDetector;
+import viewdemo.tumour.com.a51ehealth.view.utils.PhoneUtils.BottomPopUpDialog;
+import viewdemo.tumour.com.a51ehealth.view.utils.PhoneUtils.PhotoUtils;
 import viewdemo.tumour.com.a51ehealth.view.utils.SPUtils;
 import viewdemo.tumour.com.a51ehealth.view.utils.glide.GlideApp;
 
@@ -61,6 +69,16 @@ public class MainActivity extends BaseActivity {
 
     public final String bigUrl = "https://raw.githubusercontent.com/sfsheng0322/GlideImageView/master/screenshot/girl.jpg";
     public final String smallUrl = "https://raw.githubusercontent.com/sfsheng0322/GlideImageView/master/screenshot/girl_thumbnail.jpg";
+    private View btn6;
+
+    private File file2;
+    private Uri camera_uri;
+    private static final int REQUEST_PICTURE = 400;
+    private static final int REQUEST_CAMERA = 500;
+
+    //这是是有裁剪回调的代码
+//    private File fileCropUri = new File(Environment.getExternalStorageDirectory().getPath() + "/crop_photo.jpg");
+//    private static final int CODE_RESULT_REQUEST = 300;
 
     @Override
     public int getId() {
@@ -75,6 +93,7 @@ public class MainActivity extends BaseActivity {
         btn3 = findViewById(R.id.btn3);
         btn4 = findViewById(R.id.btn4);
         btn5 = findViewById(R.id.btn5);
+        btn6 = findViewById(R.id.btn6);
         tv = findViewById(R.id.tv);
         image = findViewById(R.id.image);
 
@@ -87,6 +106,7 @@ public class MainActivity extends BaseActivity {
         btn3.setOnClickListener(this);
         btn4.setOnClickListener(this);
         btn5.setOnClickListener(this);
+        btn6.setOnClickListener(this);
         image.setOnClickListener(this);
     }
 
@@ -139,6 +159,13 @@ public class MainActivity extends BaseActivity {
 
                 break;
 
+            case R.id.btn6:
+
+
+                method6();
+
+                break;
+
 
             case R.id.image:
 
@@ -148,6 +175,7 @@ public class MainActivity extends BaseActivity {
                 ActivityOptionsCompat compat = ActivityOptionsCompat
                         .makeSceneTransitionAnimation(MainActivity.this, image, getString(R.string.transition_image));
                 ActivityCompat.startActivity(MainActivity.this, intent, compat.toBundle());
+
                 break;
 
 
@@ -155,6 +183,7 @@ public class MainActivity extends BaseActivity {
 
 
     }
+
 
     private void method1() {
 
@@ -270,7 +299,6 @@ public class MainActivity extends BaseActivity {
 
     private void method4() {
 
-
         CacheProviderUtils
                 .getInstance()
                 .using(Provider.class)
@@ -289,8 +317,165 @@ public class MainActivity extends BaseActivity {
                     }
                 });
 
+    }
+
+    private void method6() {
+        String[] data = {"拍照", "从相册中选择"};
+        new BottomPopUpDialog.Builder()
+                .setDialogData(data)
+                .setItemTextColor(2, R.color.colorAccent)
+                .setItemTextColor(4, R.color.colorAccent)
+                .setCallBackDismiss(true)
+                .setItemLineColor(R.color.line_color)
+                .setItemOnListener(new BottomPopUpDialog.BottomPopDialogOnClickListener() {
+                    @Override
+                    public void onDialogClick(String tag) {
+
+                        if ("拍照".equals(tag)) {
+
+                            camera();
+
+                        } else if ("从相册中选择".equals(tag)) {
+
+                            imagePicker();
+                        }
+
+                    }
+                })
+                .show(getSupportFragmentManager(), "tag");
 
     }
+
+
+    //打开相机
+    private void camera() {
+        new RxPermissions(this)
+                .request(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        if (aBoolean) {
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            //创建照片存储路径
+                            file2 = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/zjyl/" + System.currentTimeMillis() + ".jpg");
+                            file2.getParentFile().mkdirs();
+                            //根据路径获取uri
+                            camera_uri = Uri.fromFile(file2);
+                            //如果版本是n，就从新设置这个uri
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                camera_uri = FileProvider.getUriForFile(MainActivity.this, "viewdemo.tumour.com.a51ehealth.view.FileProvider", file2);//通过FileProvider创建一个content类型的Uri
+                                //添加权限
+                                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            }
+                            //将拍照结果保存至photo_file的Uri中，不保留在相册中
+                            intent.putExtra(MediaStore.EXTRA_OUTPUT, camera_uri);
+                            //开启相机
+                            startActivityForResult(intent, REQUEST_CAMERA);
+
+                        } else {
+
+                            showToast("请在设置中打开拍照权限");
+                        }
+
+                    }
+                });
+
+    }
+
+    //打开图库
+    private void imagePicker() {
+
+        new RxPermissions(this)
+                .request(Manifest.permission.READ_EXTERNAL_STORAGE)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        if (aBoolean) {
+
+                            Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                            photoPickerIntent.setType("image/*");
+                            startActivityForResult(photoPickerIntent, REQUEST_PICTURE);
+
+                        } else {
+
+                            showToast("请在设置中打开读取sd卡权限");
+                        }
+
+                    }
+                });
+    }
+
+
+        @Override//这个是没有裁剪头像的回调代码
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
+            if (resultCode == RESULT_OK) {
+                switch (requestCode) {
+                    case REQUEST_PICTURE://打开系统相册，获取图片地址
+
+                        Uri uri = data.getData();
+                        String path = PhotoUtils.getPath(this, uri);
+                        //截取工具类中的多余的字符串，如果要前边的路径就会报错，还不知道原因
+                        path = path.substring(7, path.length());
+                        image.setImageBitmap(BitmapFactory.decodeFile(path));
+
+                        break;
+
+
+                    case REQUEST_CAMERA://打开系统相机获取图片地址
+
+                        String absolutePath = file2.getAbsolutePath();
+                        image.setImageBitmap(BitmapFactory.decodeFile(absolutePath));
+                        break;
+
+
+                }
+
+            }
+        }
+
+        //这是是有裁剪回调的代码
+ /*   @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+
+                case REQUEST_PICTURE://打开系统相册，获取图片地址
+                    //通过裁剪路径获取裁剪的uri
+                    Uri cropImageUri2 = Uri.fromFile(fileCropUri);
+                    //通过系统回调回获取照片的uri
+                    Uri newUri = Uri.parse(PhotoUtils.getPath(this, data.getData()));
+                    //如果版本大于N从新给uri复制
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                        newUri = FileProvider.getUriForFile(this, "viewdemo.tumour.com.a51ehealth.view.FileProvider", new File(newUri.getPath()));
+
+                    PhotoUtils.cropImageUri(this, newUri, cropImageUri2, 1, 1, 480, 480, CODE_RESULT_REQUEST);
+
+
+                    break;
+
+
+                case REQUEST_CAMERA:
+
+                    //把裁剪的路径转换成uri
+                    Uri cropImageUri = Uri.fromFile(fileCropUri);
+                    //开启裁剪
+                    PhotoUtils.cropImageUri(this, camera_uri, cropImageUri, 1, 1, 480, 480, CODE_RESULT_REQUEST);
+
+                    break;
+
+                case CODE_RESULT_REQUEST://裁剪的回调
+
+                    image.setImageBitmap(BitmapFactory.decodeFile(fileCropUri.getAbsolutePath()));
+
+                    break;
+
+
+            }
+
+        }
+    }*/
 
 
 }

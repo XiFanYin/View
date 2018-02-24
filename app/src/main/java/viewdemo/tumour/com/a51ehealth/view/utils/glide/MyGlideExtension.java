@@ -1,5 +1,7 @@
 package viewdemo.tumour.com.a51ehealth.view.utils.glide;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -43,7 +45,11 @@ public class MyGlideExtension {
                 }
                 @Override
                 public void onSucceeful() {
-                    GlideApp.with(image.getContext()).load(bigUrl).into(image);
+
+                    GlideUrl glideUrl = new GlideUrl(bigUrl);
+                    File file = DiskLruCacheWrapper.get(Glide.getPhotoCacheDir(image.getContext()), 250 * 1024 * 1024).get(new OriginalKey(glideUrl, EmptySignature.obtain()));
+                    Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                    image.setImageBitmap(bitmap);
                 }
             });
         } else {//表示已经缓存

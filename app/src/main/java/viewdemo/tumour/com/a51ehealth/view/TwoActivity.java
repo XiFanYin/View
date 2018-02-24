@@ -41,7 +41,7 @@ public class TwoActivity extends BaseActivity {
 
         bigUrl = getIntent().getStringExtra("bigUrl");
         smallUrl = getIntent().getStringExtra("smallUrl");
-
+        //切记不要跳过缓存，否则会加载不出来
         GlideApp.with(this)
                 .load(bigUrl)
                 .imageProgressListener(smallUrl, bigUrl, image2)

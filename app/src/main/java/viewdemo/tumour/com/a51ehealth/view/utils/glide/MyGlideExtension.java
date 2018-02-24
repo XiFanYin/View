@@ -43,13 +43,15 @@ public class MyGlideExtension {
                     load.setTargetView(image);
                     load.setProgress(progress);
                 }
+
                 @Override
                 public void onSucceeful() {
-
-                    GlideUrl glideUrl = new GlideUrl(bigUrl);
-                    File file = DiskLruCacheWrapper.get(Glide.getPhotoCacheDir(image.getContext()), 250 * 1024 * 1024).get(new OriginalKey(glideUrl, EmptySignature.obtain()));
-                    Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                    image.setImageBitmap(bitmap);
+                    if (file != null) {
+                        GlideUrl glideUrl = new GlideUrl(bigUrl);
+                        File file = DiskLruCacheWrapper.get(Glide.getPhotoCacheDir(image.getContext()), 250 * 1024 * 1024).get(new OriginalKey(glideUrl, EmptySignature.obtain()));
+                        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                        image.setImageBitmap(bitmap);
+                    }
                 }
             });
         } else {//表示已经缓存
@@ -57,8 +59,6 @@ public class MyGlideExtension {
             GlideApp.with(image.getContext()).load(bigUrl).into(image);
 
         }
-
-
 
 
     }

@@ -46,9 +46,10 @@ public class MyGlideExtension {
 
                 @Override
                 public void onSucceeful() {
+                    GlideUrl glideUrl = new GlideUrl(bigUrl);
+                    File file = DiskLruCacheWrapper.get(Glide.getPhotoCacheDir(image.getContext()), 250 * 1024 * 1024).get(new OriginalKey(glideUrl, EmptySignature.obtain()));
+
                     if (file != null) {
-                        GlideUrl glideUrl = new GlideUrl(bigUrl);
-                        File file = DiskLruCacheWrapper.get(Glide.getPhotoCacheDir(image.getContext()), 250 * 1024 * 1024).get(new OriginalKey(glideUrl, EmptySignature.obtain()));
                         Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
                         image.setImageBitmap(bitmap);
                     }

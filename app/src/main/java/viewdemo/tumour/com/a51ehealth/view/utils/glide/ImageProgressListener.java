@@ -10,4 +10,6 @@ public interface ImageProgressListener {
 
     void onProgress(double progress);
 
+    void onSucceeful();
+
 }

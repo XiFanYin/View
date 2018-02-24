@@ -45,14 +45,7 @@ public class TwoActivity extends BaseActivity {
         GlideApp.with(this)
                 .load(bigUrl)
                 .imageProgressListener(smallUrl, bigUrl, image2)
-                .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .into(new SimpleTarget<Drawable>() {
-                    @Override
-                    public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
-                        GlideApp.with(TwoActivity.this).load(bigUrl).into(image2);
-                    }
-                });
+                .preload();
 
 
     }

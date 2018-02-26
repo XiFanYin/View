@@ -34,6 +34,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    compile 'com.android.support:design:26.+'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     /*在Retrofit2.0版本之后，Retrofit底层自动依赖了OkHttp，所以我们不用重复依赖Okhttp了*/
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
@@ -62,4 +63,6 @@ dependencies {
     compile 'com.github.VictorAlbertos.Jolyglot:gson:0.0.3'
     /*分包支持*/
     compile 'com.android.support:multidex:1.0.1'
+
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.35'
 }

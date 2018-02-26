@@ -66,11 +66,8 @@ public class MainActivity extends BaseActivity {
     private ProgressDialog pd;
     private File file = new File(Environment.getExternalStorageDirectory().getPath(), "wisdom_doctor.apk");
     private View btn5;
-
-    public final String bigUrl = "https://raw.githubusercontent.com/sfsheng0322/GlideImageView/master/screenshot/girl.jpg";
-    public final String smallUrl = "https://raw.githubusercontent.com/sfsheng0322/GlideImageView/master/screenshot/girl_thumbnail.jpg";
     private View btn6;
-
+    private View btn7;
     private File file2;
     private Uri camera_uri;
     private static final int REQUEST_PICTURE = 400;
@@ -79,6 +76,10 @@ public class MainActivity extends BaseActivity {
     //这是是有裁剪回调的代码
 //    private File fileCropUri = new File(Environment.getExternalStorageDirectory().getPath() + "/crop_photo.jpg");
 //    private static final int CODE_RESULT_REQUEST = 300;
+
+
+    public final String bigUrl = "https://raw.githubusercontent.com/sfsheng0322/GlideImageView/master/screenshot/girl.jpg";
+    public final String smallUrl = "https://raw.githubusercontent.com/sfsheng0322/GlideImageView/master/screenshot/girl_thumbnail.jpg";
 
     @Override
     public int getId() {
@@ -94,6 +95,7 @@ public class MainActivity extends BaseActivity {
         btn4 = findViewById(R.id.btn4);
         btn5 = findViewById(R.id.btn5);
         btn6 = findViewById(R.id.btn6);
+        btn7 = findViewById(R.id.btn7);
         tv = findViewById(R.id.tv);
         image = findViewById(R.id.image);
 
@@ -107,6 +109,7 @@ public class MainActivity extends BaseActivity {
         btn4.setOnClickListener(this);
         btn5.setOnClickListener(this);
         btn6.setOnClickListener(this);
+        btn7.setOnClickListener(this);
         image.setOnClickListener(this);
     }
 
@@ -167,13 +170,19 @@ public class MainActivity extends BaseActivity {
                 break;
 
 
+            case R.id.btn7:
+
+                jumpToActivity(listActivity.class);
+
+                break;
+
+
             case R.id.image:
 
                 Intent intent = new Intent(this, TwoActivity.class);
                 intent.putExtra("bigUrl", bigUrl);
                 intent.putExtra("smallUrl", smallUrl);
-                ActivityOptionsCompat compat = ActivityOptionsCompat
-                        .makeSceneTransitionAnimation(MainActivity.this, image, getString(R.string.transition_image));
+                ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this, image, getString(R.string.transition_image));
                 ActivityCompat.startActivity(MainActivity.this, intent, compat.toBundle());
 
                 break;
@@ -406,35 +415,35 @@ public class MainActivity extends BaseActivity {
     }
 
 
-        @Override//这个是没有裁剪头像的回调代码
-        public void onActivityResult(int requestCode, int resultCode, Intent data) {
-            super.onActivityResult(requestCode, resultCode, data);
-            if (resultCode == RESULT_OK) {
-                switch (requestCode) {
-                    case REQUEST_PICTURE://打开系统相册，获取图片地址
+    @Override//这个是没有裁剪头像的回调代码
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_PICTURE://打开系统相册，获取图片地址
 
-                        Uri uri = data.getData();
-                        String path = PhotoUtils.getPath(this, uri);
-                        //截取工具类中的多余的字符串，如果要前边的路径就会报错，还不知道原因
-                        path = path.substring(7, path.length());
-                        image.setImageBitmap(BitmapFactory.decodeFile(path));
+                    Uri uri = data.getData();
+                    String path = PhotoUtils.getPath(this, uri);
+                    //截取工具类中的多余的字符串，如果要前边的路径就会报错，还不知道原因
+                    path = path.substring(7, path.length());
+                    image.setImageBitmap(BitmapFactory.decodeFile(path));
 
-                        break;
-
-
-                    case REQUEST_CAMERA://打开系统相机获取图片地址
-
-                        String absolutePath = file2.getAbsolutePath();
-                        image.setImageBitmap(BitmapFactory.decodeFile(absolutePath));
-                        break;
+                    break;
 
 
-                }
+                case REQUEST_CAMERA://打开系统相机获取图片地址
+
+                    String absolutePath = file2.getAbsolutePath();
+                    image.setImageBitmap(BitmapFactory.decodeFile(absolutePath));
+                    break;
+
 
             }
-        }
 
-        //这是是有裁剪回调的代码
+        }
+    }
+
+    //这是是有裁剪回调的代码
  /*   @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

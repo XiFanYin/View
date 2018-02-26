@@ -25,6 +25,14 @@
             android:layout_height="wrap_content"
             android:text="上传图片" />
 
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
         <Button
             android:id="@+id/btn3"
             android:layout_width="wrap_content"
@@ -36,7 +44,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="没网显示缓存" />
-
 
     </LinearLayout>
 
@@ -59,6 +66,17 @@
             android:text="拍照和打开图库" />
 
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btn7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="跳转到图片列表集合" />
     </LinearLayout>
 
 

@@ -46,6 +46,7 @@ public class MyGlideExtension {
 
                 @Override
                 public void onSucceeful() {
+
                     GlideUrl glideUrl = new GlideUrl(bigUrl);
                     File file = DiskLruCacheWrapper.get(Glide.getPhotoCacheDir(image.getContext()), 250 * 1024 * 1024).get(new OriginalKey(glideUrl, EmptySignature.obtain()));
 
@@ -55,9 +56,10 @@ public class MyGlideExtension {
                     }
                 }
             });
-        } else {//表示已经缓存
+        } else {//表示已经缓存,这里需要优化，先判断内存中是否有Glide图片，如果没有再去本地读取
 
-            GlideApp.with(image.getContext()).load(bigUrl).into(image);
+            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+            image.setImageBitmap(bitmap);
 
         }
 

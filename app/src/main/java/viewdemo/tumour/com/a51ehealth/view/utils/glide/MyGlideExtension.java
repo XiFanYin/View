@@ -16,6 +16,7 @@ import com.bumptech.glide.signature.EmptySignature;
 import java.io.File;
 
 import jp.wasabeef.glide.transformations.ColorFilterTransformation;
+import viewdemo.tumour.com.a51ehealth.view.MainActivity;
 import viewdemo.tumour.com.a51ehealth.view.TwoActivity;
 
 /**
@@ -46,21 +47,13 @@ public class MyGlideExtension {
 
                 @Override
                 public void onSucceeful() {
+                    GlideApp.with(image.getContext()).load(bigUrl).dontAnimate().placeholder(image.getDrawable()).into(image);
 
-                    GlideUrl glideUrl = new GlideUrl(bigUrl);
-                    File file = DiskLruCacheWrapper.get(Glide.getPhotoCacheDir(image.getContext()), 250 * 1024 * 1024).get(new OriginalKey(glideUrl, EmptySignature.obtain()));
-
-                    if (file != null) {
-                        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                        image.setImageBitmap(bitmap);
-                    }
                 }
             });
         } else {//表示已经缓存,这里需要优化，先判断内存中是否有Glide图片，如果没有再去本地读取
 
-            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-            image.setImageBitmap(bitmap);
-
+            GlideApp.with(image.getContext()).load(bigUrl).dontAnimate().placeholder(image.getDrawable()).into(image);
         }
 
 

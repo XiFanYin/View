@@ -44,7 +44,6 @@ public class TwoActivity extends BaseActivity {
         //切记不要跳过硬盘缓存diskCacheStrategy(DiskCacheStrategy.NONE)否则会加载不出来
         GlideApp.with(this)
                 .load(bigUrl)
-                .skipMemoryCache(true)
                 .imageProgressListener(smallUrl, bigUrl, image2)
                 .preload();
 

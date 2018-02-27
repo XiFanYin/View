@@ -78,8 +78,8 @@ public class MainActivity extends BaseActivity {
 //    private static final int CODE_RESULT_REQUEST = 300;
 
 
-    public final String bigUrl = "https://raw.githubusercontent.com/sfsheng0322/GlideImageView/master/screenshot/girl.jpg";
-    public final String smallUrl = "https://raw.githubusercontent.com/sfsheng0322/GlideImageView/master/screenshot/girl_thumbnail.jpg";
+    public final String bigUrl = "http://www.mypublic.top/long/7_7.jpg";
+    public final String smallUrl = "http://www.mypublic.top/long/7.jpg";
 
     @Override
     public int getId() {

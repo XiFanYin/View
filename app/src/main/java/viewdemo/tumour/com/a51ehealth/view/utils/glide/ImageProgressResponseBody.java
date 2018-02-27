@@ -94,16 +94,7 @@ public class ImageProgressResponseBody extends ResponseBody {
             }
             if (listener != null && totalBytesRead == fullLength) {
                 String url = getKey(ImageProgressInterceptor.LISTENER_MAP, listener);
-                Observable.just("")
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Consumer<String>() {
-                            @Override
-                            public void accept(String s) throws Exception {
-                                listener.onSucceeful();
-                                ImageProgressInterceptor.removeListener(url);
-                            }
-                        });
-
+                ImageProgressInterceptor.removeListener(url);
             }
             currentProgress = progress;
             return bytesRead;

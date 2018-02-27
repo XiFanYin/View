@@ -30,31 +30,18 @@ public class MyGlideExtension {
     }
 
     @GlideOption
-    public static void imageProgressListener(RequestOptions options, String smallUrl, String bigUrl, ImageView image) {
-        //获取Glide的缓存路径如果为null，表示没有缓存，如果有表示有缓存
-        GlideUrl glideUrl = new GlideUrl(bigUrl);
-        File file = DiskLruCacheWrapper.get(Glide.getPhotoCacheDir(image.getContext()), 250 * 1024 * 1024).get(new OriginalKey(glideUrl, EmptySignature.obtain()));
+    public static void imageProgressListener(RequestOptions options, String bigUrl, ImageView image) {
 
-        if (file == null) {//表示没有缓存
-            ImageLoadingView load = new ImageLoadingView(image.getContext());
-            GlideApp.with(image.getContext()).load(smallUrl).transforms(new ColorFilterTransformation(0x22222222)).into(image);
-            ImageProgressInterceptor.addListener(bigUrl, new ImageProgressListener() {
-                @Override
-                public void onProgress(double progress) {
-                    load.setTargetView(image);
-                    load.setProgress(progress);
-                }
+        ImageLoadingView load3 = new ImageLoadingView(image.getContext());
+        ImageProgressInterceptor.addListener(bigUrl, new ImageProgressListener() {
+            @Override
+            public void onProgress(double progress) {
+                load3.setTargetView(image);
+                load3.setProgress(progress);
+            }
 
-                @Override
-                public void onSucceeful() {
-                    GlideApp.with(image.getContext()).load(bigUrl).dontAnimate().placeholder(image.getDrawable()).into(image);
 
-                }
-            });
-        } else {//表示已经缓存,这里需要优化，先判断内存中是否有Glide图片，如果没有再去本地读取
-
-            GlideApp.with(image.getContext()).load(bigUrl).dontAnimate().placeholder(image.getDrawable()).into(image);
-        }
+        });
 
 
     }

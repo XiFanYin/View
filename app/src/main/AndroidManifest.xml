@@ -29,6 +29,8 @@
 
         <activity android:name=".listActivity" />
 
+        <activity android:name=".utils.glide.ImageDetailsActivity" />
+
 
         <!--拍照需要用的-->
         <provider

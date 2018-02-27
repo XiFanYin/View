@@ -1,10 +1,12 @@
 package viewdemo.tumour.com.a51ehealth.view.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2018/2/26.
  */
 
-public class ImageUrl {
+public class ImageUrl implements Serializable {
 
 
     private String bigImage;

@@ -26,6 +26,7 @@ public class ImagePagerAdapter extends PagerAdapter {
 
     private ArrayList<ImageUrl> mDatas;
     private Context mContext;
+    private OnSingleTagListener onSingleTagListener;
 
 
     public ImagePagerAdapter(ArrayList<ImageUrl> mDatas, Context mContext) {
@@ -57,9 +58,20 @@ public class ImagePagerAdapter extends PagerAdapter {
                 .with(mContext)
                 .load(mDatas.get(position).getBigImage())
                 .imageProgressListener(mDatas.get(position).getBigImage(), holder.photo_view)
-                .thumbnail(GlideApp.with(mContext).load(mDatas.get(position).getSmallImage()).transforms(new ColorFilterTransformation(0x22222222)))
+                .thumbnail(GlideApp.with(mContext).load(mDatas.get(position).getSmallImage()))
                 .into(holder.photo_view);
-
+        holder.photo_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSingleTagListener.onTag();
+            }
+        });
+        holder.ImageViewItemLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSingleTagListener.onTag();
+            }
+        });
 
         container.addView(mView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         return mView;
@@ -76,5 +88,14 @@ public class ImagePagerAdapter extends PagerAdapter {
             this.ImageViewItemLayout = (RelativeLayout) rootView.findViewById(R.id.ImageViewItemLayout);
         }
 
+    }
+
+
+    public interface OnSingleTagListener {
+        public void onTag();
+    }
+
+    public void setOnSingleTagListener(OnSingleTagListener onSingleTagListener) {
+        this.onSingleTagListener = onSingleTagListener;
     }
 }

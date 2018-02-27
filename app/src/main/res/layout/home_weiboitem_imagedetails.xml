@@ -12,5 +12,11 @@
         android:layout_height="match_parent"
         android:transitionName="@string/transition_image" />
 
+    <viewdemo.tumour.com.a51ehealth.view.utils.glide.ImageDetailTopBar
+        android:id="@+id/imageTopBar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="20dp" />
 
 </FrameLayout>

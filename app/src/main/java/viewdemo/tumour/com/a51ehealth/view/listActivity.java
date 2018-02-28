@@ -1,10 +1,18 @@
 package viewdemo.tumour.com.a51ehealth.view;
 
+import android.app.SharedElementCallback;
+import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import viewdemo.tumour.com.a51ehealth.view.Adapter.listAdapter;
 import viewdemo.tumour.com.a51ehealth.view.base.BaseActivity;
@@ -54,6 +62,9 @@ public class listActivity extends BaseActivity {
     private ArrayList<imageData> arr = new ArrayList<>();
     private listAdapter adapter;
 
+    public static String flag;
+
+
     @Override
     public int getId() {
         return R.layout.activity_list;
@@ -65,6 +76,7 @@ public class listActivity extends BaseActivity {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void initListener() {
         ArrayList<ImageUrl> Images = new ArrayList<>();
@@ -124,6 +136,23 @@ public class listActivity extends BaseActivity {
         Images4.add(imageurl17);
         Images4.add(imageurl18);
         arr.add(new imageData("六女孩", Images4));
+
+
+        setExitSharedElementCallback(new SharedElementCallback() {
+            @Override
+            public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                super.onMapSharedElements(names, sharedElements);
+                Log.e("rrrrrrrrrrrrr", "rrrrrrrrrrr");
+                ViewGroup vg = recyclerView.findViewWithTag(flag);
+                if (vg != null) {
+                    View view = vg.findViewById(R.id.image_item);
+                    sharedElements.put(getString(R.string.transition_image), view);
+                } else {
+                    names.clear();
+                    sharedElements.clear();
+                }
+            }
+        });
     }
 
     @Override
@@ -131,5 +160,14 @@ public class listActivity extends BaseActivity {
         adapter = new listAdapter(R.layout.list_item, arr, this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
+    }
+
+
+    @Override
+    public void onActivityReenter(int resultCode, Intent data) {
+        super.onActivityReenter(resultCode, data);
+        //获取ViewPager里边传递过来的flag
+        flag = data.getStringExtra("flag");
+
     }
 }

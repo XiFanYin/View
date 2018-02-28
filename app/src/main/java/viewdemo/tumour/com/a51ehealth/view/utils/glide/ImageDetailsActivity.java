@@ -1,5 +1,6 @@
 package viewdemo.tumour.com.a51ehealth.view.utils.glide;
 
+import android.content.Intent;
 import android.os.Build;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -90,5 +91,11 @@ public class ImageDetailsActivity extends BaseActivity {
 
     }
 
+    @Override
+    public void finishAfterTransition() {
+        //重写关闭方法，传递flag值
+        setResult(233, new Intent().putExtra("flag", data.get(viewPager.getCurrentItem()).getSmallImage()));
+        super.finishAfterTransition();
+    }
 
 }

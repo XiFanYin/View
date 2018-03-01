@@ -3,7 +3,9 @@ package viewdemo.tumour.com.a51ehealth.view.utils.glide;
 import android.app.SharedElementCallback;
 import android.content.Intent;
 import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
+import android.transition.ChangeBounds;
 import android.transition.TransitionInflater;
 import android.view.View;
 
@@ -22,6 +24,14 @@ public class ImageDetailsActivity extends BaseActivity {
     private int position;
     private ImagePagerAdapter mAdapter;
     private ImageDetailTopBar mImageDetailTopBar;
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    protected void initWindow() {
+        getWindow().setSharedElementReturnTransition(new ChangeBounds().setDuration(10000));
+//        getWindow().setSharedElementsUseOverlay(false);
+    }
+
 
     @Override
     public int getId() {
@@ -99,7 +109,6 @@ public class ImageDetailsActivity extends BaseActivity {
         setResult(233, new Intent().putExtra("flag", data.get(viewPager.getCurrentItem()).getSmallImage()));
         super.finishAfterTransition();
     }
-
 
 
 }

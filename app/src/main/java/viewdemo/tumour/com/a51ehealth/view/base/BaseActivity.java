@@ -29,6 +29,8 @@ public abstract class BaseActivity extends RxAppCompatActivity implements View.O
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        initWindow();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//设制竖屏
         //隐藏掉系统原先的导航栏
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -47,8 +49,10 @@ public abstract class BaseActivity extends RxAppCompatActivity implements View.O
 
     }
 
+    protected void initWindow() {
+    }
 
-    ;
+
 
 
     public abstract int getId();
@@ -59,7 +63,6 @@ public abstract class BaseActivity extends RxAppCompatActivity implements View.O
 
 
     protected abstract void initData(boolean hasNetWork);
-
 
 
     @Override

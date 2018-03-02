@@ -28,7 +28,7 @@ public class ImageDetailsActivity extends BaseActivity {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void initWindow() {
-        getWindow().setSharedElementReturnTransition(new ChangeBounds().setDuration(10000));
+        getWindow().setSharedElementReturnTransition(new ChangeBounds());
 //        getWindow().setSharedElementsUseOverlay(false);
     }
 
@@ -82,19 +82,7 @@ public class ImageDetailsActivity extends BaseActivity {
 
             }
         });
-        //添加点击监听
-        mAdapter.setOnSingleTagListener(new ImagePagerAdapter.OnSingleTagListener() {
-            @Override
-            public void onTag() {
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    finishAfterTransition();
-                } else {
-                    finish();
-                }
-
-            }
-        });
     }
 
 

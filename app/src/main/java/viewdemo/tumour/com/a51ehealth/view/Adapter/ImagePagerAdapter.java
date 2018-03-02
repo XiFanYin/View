@@ -1,6 +1,9 @@
 package viewdemo.tumour.com.a51ehealth.view.Adapter;
 
 import android.content.Context;
+import android.graphics.Rect;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +20,7 @@ import viewdemo.tumour.com.a51ehealth.view.R;
 import viewdemo.tumour.com.a51ehealth.view.TwoActivity;
 import viewdemo.tumour.com.a51ehealth.view.bean.ImageUrl;
 import viewdemo.tumour.com.a51ehealth.view.utils.glide.GlideApp;
+import viewdemo.tumour.com.a51ehealth.view.utils.glide.ImageDetailsActivity;
 
 /**
  * Created by Administrator on 2018/2/27.
@@ -25,11 +29,10 @@ import viewdemo.tumour.com.a51ehealth.view.utils.glide.GlideApp;
 public class ImagePagerAdapter extends PagerAdapter {
 
     private ArrayList<ImageUrl> mDatas;
-    private Context mContext;
-    private OnSingleTagListener onSingleTagListener;
+    private ImageDetailsActivity mContext;
 
 
-    public ImagePagerAdapter(ArrayList<ImageUrl> mDatas, Context mContext) {
+    public ImagePagerAdapter(ArrayList<ImageUrl> mDatas, ImageDetailsActivity mContext) {
         this.mDatas = mDatas;
         this.mContext = mContext;
     }
@@ -61,15 +64,27 @@ public class ImagePagerAdapter extends PagerAdapter {
                 .thumbnail(GlideApp.with(mContext).load(mDatas.get(position).getSmallImage()))
                 .into(holder.photo_view);
         holder.photo_view.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                onSingleTagListener.onTag();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    mContext.finishAfterTransition();
+                } else {
+                    mContext.finish();
+                }
+
+
             }
         });
+
         holder.ImageViewItemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSingleTagListener.onTag();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    mContext.finishAfterTransition();
+                } else {
+                    mContext.finish();
+                }
             }
         });
 
@@ -91,11 +106,4 @@ public class ImagePagerAdapter extends PagerAdapter {
     }
 
 
-    public interface OnSingleTagListener {
-        public void onTag();
-    }
-
-    public void setOnSingleTagListener(OnSingleTagListener onSingleTagListener) {
-        this.onSingleTagListener = onSingleTagListener;
-    }
 }

@@ -42,7 +42,6 @@ public class NineAdapter extends BaseQuickAdapter<ImageUrl, BaseViewHolder> {
         ImageView imageView = helper.getView(R.id.image_item);
         GlideApp.with(act)
                 .load(item.getSmallImage())
-                .centerCrop()
                 .into(imageView);
         //设置标记，为了listActivity中能通过tag找到当前View
         helper.getView(R.id.parent).setTag(item.getSmallImage());

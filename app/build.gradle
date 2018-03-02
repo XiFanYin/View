@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     defaultConfig {
         applicationId "viewdemo.tumour.com.a51ehealth.view"
         minSdkVersion 15
@@ -18,7 +18,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '27.0.2'
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -30,11 +30,11 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:appcompat-v7:27.0.2'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    compile 'com.android.support:design:26.+'
+    compile 'com.android.support:design:27.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     /*在Retrofit2.0版本之后，Retrofit底层自动依赖了OkHttp，所以我们不用重复依赖Okhttp了*/
     compile 'com.squareup.retrofit2:retrofit:2.3.0'

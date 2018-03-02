@@ -1,13 +1,12 @@
 package viewdemo.tumour.com.a51ehealth.view.utils.glide;
 
-import android.app.SharedElementCallback;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
 import android.transition.ChangeBounds;
-import android.transition.TransitionInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -19,11 +18,11 @@ import viewdemo.tumour.com.a51ehealth.view.bean.ImageUrl;
 
 public class ImageDetailsActivity extends BaseActivity {
 
-    private ImageDetailViewPager viewPager;
+    private ViewPager viewPager;
     private ArrayList<ImageUrl> data;
     private int position;
     private ImagePagerAdapter mAdapter;
-    private ImageDetailTopBar mImageDetailTopBar;
+    private TextView mImageDetailTopBar;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -61,9 +60,9 @@ public class ImageDetailsActivity extends BaseActivity {
         viewPager.setOffscreenPageLimit(data.size() - 1);
         //设置默认指示器是否显示
         if (data.size() == 1) {
-            mImageDetailTopBar.setPageNumVisible(View.GONE);
+            mImageDetailTopBar.setVisibility(View.GONE);
         } else {
-            mImageDetailTopBar.setPageNum((position + 1) + "/" + data.size());
+            mImageDetailTopBar.setText((position + 1) + "/" + data.size());
         }
         //添加滚动监听
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -74,7 +73,7 @@ public class ImageDetailsActivity extends BaseActivity {
 
             public void onPageSelected(int position) {
                 // 每当页数发生改变时重新设定一遍当前的页数和总页数
-                mImageDetailTopBar.setPageNum((position + 1) + "/" + data.size());
+                mImageDetailTopBar.setText((position + 1) + "/" + data.size());
             }
 
 

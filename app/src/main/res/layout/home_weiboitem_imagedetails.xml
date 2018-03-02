@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/frameLayout"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#1a1a1a"
     android:orientation="vertical">
 
-    <viewdemo.tumour.com.a51ehealth.view.utils.glide.ImageDetailViewPager
+    <android.support.v4.view.ViewPager
         android:id="@+id/viewpagerId"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:transitionName="@string/transition_image" />
 
-    <viewdemo.tumour.com.a51ehealth.view.utils.glide.ImageDetailTopBar
+
+
+    <TextView
         android:id="@+id/imageTopBar"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="20dp" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:padding="8dp"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        tools:text="2/3" />
 
 </FrameLayout>

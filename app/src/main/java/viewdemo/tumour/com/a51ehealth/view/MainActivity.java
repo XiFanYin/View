@@ -76,10 +76,8 @@ public class MainActivity extends BaseActivity {
     //这是是有裁剪回调的代码
 //    private File fileCropUri = new File(Environment.getExternalStorageDirectory().getPath() + "/crop_photo.jpg");
 //    private static final int CODE_RESULT_REQUEST = 300;
-
-
-    public final String bigUrl = "http://www.mypublic.top/long/7_7.jpg";
-    public final String smallUrl = "http://www.mypublic.top/long/7.jpg";
+    public static final String smallUrl = "http://img1.imgtn.bdimg.com/it/u=2016826161,3846692402&fm=27&gp=0.jpg";
+    public static final String bigUrl = "http://lili.la/zb_users/upload/2017/05/201705171494959833124433.jpg";
 
     @Override
     public int getId() {

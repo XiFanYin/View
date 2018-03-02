@@ -63,6 +63,7 @@ dependencies {
     compile 'com.github.VictorAlbertos.Jolyglot:gson:0.0.3'
     /*分包支持*/
     compile 'com.android.support:multidex:1.0.1'
-    compile 'com.github.chrisbanes:PhotoView:2.0.0'
+
+    implementation  'com.github.chrisbanes:PhotoView:2.1.3'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.35'
 }

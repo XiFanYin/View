@@ -18,7 +18,7 @@ import viewdemo.tumour.com.a51ehealth.view.bean.ImageUrl;
 
 public class ImageDetailsActivity extends BaseActivity {
 
-    private ViewPager viewPager;
+    private SlideViewPager viewPager;
     private ArrayList<ImageUrl> data;
     private int position;
     private ImagePagerAdapter mAdapter;
@@ -27,7 +27,7 @@ public class ImageDetailsActivity extends BaseActivity {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void initWindow() {
-        getWindow().setSharedElementReturnTransition(new ChangeBounds());
+//        getWindow().setSharedElementReturnTransition(new ChangeBounds());
 //        getWindow().setSharedElementsUseOverlay(false);
     }
 

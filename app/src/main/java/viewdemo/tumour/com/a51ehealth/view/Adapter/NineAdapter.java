@@ -1,7 +1,6 @@
 package viewdemo.tumour.com.a51ehealth.view.Adapter;
 
 import android.app.Activity;
-import android.app.ListActivity;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -19,7 +18,7 @@ import viewdemo.tumour.com.a51ehealth.view.R;
 import viewdemo.tumour.com.a51ehealth.view.bean.ImageUrl;
 import viewdemo.tumour.com.a51ehealth.view.listActivity;
 import viewdemo.tumour.com.a51ehealth.view.utils.glide.GlideApp;
-import viewdemo.tumour.com.a51ehealth.view.utils.glide.ImageDetailsActivity;
+import viewdemo.tumour.com.a51ehealth.view.ImageDetailsActivity;
 
 /**
  * Created by Administrator on 2018/2/26.

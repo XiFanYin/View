@@ -1,26 +1,20 @@
 package viewdemo.tumour.com.a51ehealth.view.Adapter;
 
-import android.content.Context;
-import android.graphics.Rect;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
 
 import java.util.ArrayList;
 
-import jp.wasabeef.glide.transformations.ColorFilterTransformation;
 import viewdemo.tumour.com.a51ehealth.view.R;
-import viewdemo.tumour.com.a51ehealth.view.TwoActivity;
 import viewdemo.tumour.com.a51ehealth.view.bean.ImageUrl;
 import viewdemo.tumour.com.a51ehealth.view.utils.glide.GlideApp;
-import viewdemo.tumour.com.a51ehealth.view.utils.glide.ImageDetailsActivity;
+import viewdemo.tumour.com.a51ehealth.view.ImageDetailsActivity;
 
 /**
  * Created by Administrator on 2018/2/27.

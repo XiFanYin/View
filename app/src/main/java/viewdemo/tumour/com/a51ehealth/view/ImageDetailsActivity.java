@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import viewdemo.tumour.com.a51ehealth.view.Adapter.ImageFragmentPagerAdapter;
 import viewdemo.tumour.com.a51ehealth.view.Adapter.ImagePagerAdapter;
 import viewdemo.tumour.com.a51ehealth.view.R;
 import viewdemo.tumour.com.a51ehealth.view.base.BaseActivity;
@@ -19,15 +20,8 @@ public class ImageDetailsActivity extends BaseActivity {
     private SlideViewPager viewPager;
     private ArrayList<ImageUrl> data;
     private int position;
-    private ImagePagerAdapter mAdapter;
+    private ImageFragmentPagerAdapter mAdapter;
     private TextView mImageDetailTopBar;
-
-
-    @Override
-    protected void initWindow() {
-//        getWindow().setSharedElementReturnTransition(new ChangeBounds());
-//        getWindow().setSharedElementsUseOverlay(false);
-    }
 
 
     @Override
@@ -48,14 +42,12 @@ public class ImageDetailsActivity extends BaseActivity {
 
     @Override
     protected void initListener() {
-        //创建Adapter
-        mAdapter = new ImagePagerAdapter(data, this);
+        //创建Adapter,这里必须用FragmentAdapter，否则会出现图片错乱
+        mAdapter = new ImageFragmentPagerAdapter(getSupportFragmentManager(), data);
         //设置Adapter
         viewPager.setAdapter(mAdapter);
         //设置当前为第几张图片
         viewPager.setCurrentItem(position);
-        //预加载页数
-        viewPager.setOffscreenPageLimit(data.size() - 1);
         //设置默认指示器是否显示
         if (data.size() == 1) {
             mImageDetailTopBar.setVisibility(View.GONE);

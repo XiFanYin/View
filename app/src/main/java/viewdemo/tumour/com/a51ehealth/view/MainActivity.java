@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -51,7 +50,7 @@ import viewdemo.tumour.com.a51ehealth.view.net.UpFile.UpFileUtils;
 import viewdemo.tumour.com.a51ehealth.view.net.utils.NetworkDetector;
 import viewdemo.tumour.com.a51ehealth.view.utils.PhoneUtils.BottomPopUpDialog;
 import viewdemo.tumour.com.a51ehealth.view.utils.PhoneUtils.PhotoUtils;
-import viewdemo.tumour.com.a51ehealth.view.utils.SPUtils;
+import viewdemo.tumour.com.a51ehealth.view.utils.SPutils.SPUtils;
 import viewdemo.tumour.com.a51ehealth.view.utils.glide.GlideApp;
 
 public class MainActivity extends BaseActivity {

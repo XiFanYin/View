@@ -1,4 +1,4 @@
-package viewdemo.tumour.com.a51ehealth.view.utils;
+package viewdemo.tumour.com.a51ehealth.view.utils.SPutils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

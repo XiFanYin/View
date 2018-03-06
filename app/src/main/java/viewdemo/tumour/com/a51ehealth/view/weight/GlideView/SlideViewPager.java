@@ -1,4 +1,4 @@
-package viewdemo.tumour.com.a51ehealth.view.utils.glide;
+package viewdemo.tumour.com.a51ehealth.view.weight.GlideView;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;

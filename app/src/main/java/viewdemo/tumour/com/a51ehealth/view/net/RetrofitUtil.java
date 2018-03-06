@@ -13,7 +13,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import viewdemo.tumour.com.a51ehealth.view.net.API.Constant;
 import viewdemo.tumour.com.a51ehealth.view.net.MeInterceptor.AddParamInterceptor;
 import viewdemo.tumour.com.a51ehealth.view.net.MyConverter.MyConverterFactory;
-import viewdemo.tumour.com.a51ehealth.view.utils.SPUtils;
+import viewdemo.tumour.com.a51ehealth.view.utils.SPutils.SPUtils;
 
 
 /**

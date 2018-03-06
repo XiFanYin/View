@@ -18,7 +18,7 @@ import java.util.List;
 import viewdemo.tumour.com.a51ehealth.view.R;
 import viewdemo.tumour.com.a51ehealth.view.bean.ImageUrl;
 import viewdemo.tumour.com.a51ehealth.view.bean.imageData;
-import viewdemo.tumour.com.a51ehealth.view.utils.DividerGridItemDecoration;
+import viewdemo.tumour.com.a51ehealth.view.weight.GlideView.DividerGridItemDecoration;
 
 /**
  * Created by Administrator on 2018/2/26.

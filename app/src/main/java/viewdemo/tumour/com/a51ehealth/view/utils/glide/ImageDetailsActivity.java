@@ -1,10 +1,7 @@
 package viewdemo.tumour.com.a51ehealth.view.utils.glide;
 
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
-import android.transition.ChangeBounds;
 import android.view.View;
 import android.widget.TextView;
 
@@ -14,6 +11,7 @@ import viewdemo.tumour.com.a51ehealth.view.Adapter.ImagePagerAdapter;
 import viewdemo.tumour.com.a51ehealth.view.R;
 import viewdemo.tumour.com.a51ehealth.view.base.BaseActivity;
 import viewdemo.tumour.com.a51ehealth.view.bean.ImageUrl;
+import viewdemo.tumour.com.a51ehealth.view.weight.GlideView.SlideViewPager;
 
 
 public class ImageDetailsActivity extends BaseActivity {

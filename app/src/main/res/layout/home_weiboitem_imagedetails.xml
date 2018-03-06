@@ -6,7 +6,7 @@
     android:background="#1a1a1a"
     android:orientation="vertical">
 
-    <viewdemo.tumour.com.a51ehealth.view.utils.glide.SlideViewPager
+    <viewdemo.tumour.com.a51ehealth.view.weight.GlideView.SlideViewPager
         android:id="@+id/viewpagerId"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

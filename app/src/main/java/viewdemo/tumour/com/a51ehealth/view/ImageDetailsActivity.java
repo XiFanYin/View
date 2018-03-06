@@ -1,11 +1,16 @@
 package viewdemo.tumour.com.a51ehealth.view;
 
+import android.app.SharedElementCallback;
 import android.content.Intent;
+import android.os.Build;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import viewdemo.tumour.com.a51ehealth.view.Adapter.ImageFragmentPagerAdapter;
 import viewdemo.tumour.com.a51ehealth.view.Adapter.ImagePagerAdapter;
@@ -72,6 +77,23 @@ public class ImageDetailsActivity extends BaseActivity {
             }
         });
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setEnterSharedElementCallback(new SharedElementCallback() {
+                @Override
+                public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                    super.onMapSharedElements(names, sharedElements);
+
+                    Fragment currentFragment = (Fragment) viewPager.getAdapter().instantiateItem(viewPager, viewPager.getCurrentItem());
+                    View view = currentFragment.getView();
+
+                    if (view == null) {
+                        return;
+                    }
+                    sharedElements.put(data.get(viewPager.getCurrentItem()).getBigImage(), view.findViewById(R.id.photo_view));
+                }
+            });
+        }
+
     }
 
 
@@ -83,7 +105,7 @@ public class ImageDetailsActivity extends BaseActivity {
     @Override
     public void finishAfterTransition() {
         //重写关闭方法，传递flag值
-        setResult(233, new Intent().putExtra("flag", data.get(viewPager.getCurrentItem()).getSmallImage()));
+        listActivity.flag = data.get(viewPager.getCurrentItem()).getSmallImage();
         super.finishAfterTransition();
     }
 

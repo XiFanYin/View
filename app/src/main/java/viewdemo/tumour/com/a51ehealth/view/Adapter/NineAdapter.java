@@ -2,6 +2,7 @@ package viewdemo.tumour.com.a51ehealth.view.Adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -44,7 +45,10 @@ public class NineAdapter extends BaseQuickAdapter<ImageUrl, BaseViewHolder> {
                 .into(imageView);
         //设置标记，为了listActivity中能通过tag找到当前View
         helper.getView(R.id.parent).setTag(item.getSmallImage());
-
+        //设置动画的名字，保证每个都是唯一的
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            imageView.setTransitionName(item.getBigImage());
+        }
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,7 +60,7 @@ public class NineAdapter extends BaseQuickAdapter<ImageUrl, BaseViewHolder> {
                 Intent intent = new Intent(act, ImageDetailsActivity.class);
                 intent.putExtra("images", data);
                 intent.putExtra("position", helper.getAdapterPosition());
-                ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation(act, imageView, act.getString(R.string.transition_image));
+                ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation(act, imageView, item.getBigImage());
                 ActivityCompat.startActivity(act, intent, compat.toBundle());
             }
         });

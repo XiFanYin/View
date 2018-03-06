@@ -142,11 +142,13 @@ public class listActivity extends BaseActivity {
                 @Override
                 public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
                     super.onMapSharedElements(names, sharedElements);
-                    Log.e("rrrrrrrrrrrrr", "rrrrrrrrrrr");
+
                     ViewGroup vg = recyclerView.findViewWithTag(flag);
                     if (vg != null) {
                         View view = vg.findViewById(R.id.image_item);
-                        sharedElements.put(getString(R.string.transition_image), view);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            sharedElements.put(view.getTransitionName(), view);
+                        }
                     } else {
                         names.clear();
                         sharedElements.clear();
@@ -164,11 +166,4 @@ public class listActivity extends BaseActivity {
     }
 
 
-    @Override
-    public void onActivityReenter(int resultCode, Intent data) {
-        super.onActivityReenter(resultCode, data);
-        //获取ViewPager里边传递过来的flag
-        flag = data.getStringExtra("flag");
-
-    }
 }

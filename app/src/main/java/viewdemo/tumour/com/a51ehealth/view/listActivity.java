@@ -76,7 +76,6 @@ public class listActivity extends BaseActivity {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void initListener() {
         ArrayList<ImageUrl> Images = new ArrayList<>();
@@ -138,21 +137,23 @@ public class listActivity extends BaseActivity {
         arr.add(new imageData("六女孩", Images4));
 
 
-        setExitSharedElementCallback(new SharedElementCallback() {
-            @Override
-            public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-                super.onMapSharedElements(names, sharedElements);
-                Log.e("rrrrrrrrrrrrr", "rrrrrrrrrrr");
-                ViewGroup vg = recyclerView.findViewWithTag(flag);
-                if (vg != null) {
-                    View view = vg.findViewById(R.id.image_item);
-                    sharedElements.put(getString(R.string.transition_image), view);
-                } else {
-                    names.clear();
-                    sharedElements.clear();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setExitSharedElementCallback(new SharedElementCallback() {
+                @Override
+                public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                    super.onMapSharedElements(names, sharedElements);
+                    Log.e("rrrrrrrrrrrrr", "rrrrrrrrrrr");
+                    ViewGroup vg = recyclerView.findViewWithTag(flag);
+                    if (vg != null) {
+                        View view = vg.findViewById(R.id.image_item);
+                        sharedElements.put(getString(R.string.transition_image), view);
+                    } else {
+                        names.clear();
+                        sharedElements.clear();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override

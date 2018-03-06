@@ -24,7 +24,7 @@ public class ImageDetailsActivity extends BaseActivity {
     private ImagePagerAdapter mAdapter;
     private TextView mImageDetailTopBar;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
     @Override
     protected void initWindow() {
 //        getWindow().setSharedElementReturnTransition(new ChangeBounds());

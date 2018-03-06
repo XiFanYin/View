@@ -44,10 +44,15 @@ public class TwoActivity extends BaseActivity {
 
     @Override
     protected void initData(boolean hasNetWork) {
-
+        //获取传入小图的url和大图的url地址
         bigUrl = getIntent().getStringExtra("bigUrl");
         smallUrl = getIntent().getStringExtra("smallUrl");
-
+        /**
+         * thumbnail操作符，可以设置本地加载图片，也可以设置网络加载图片为背景，这里设置小图位加载的预览图
+         *
+         * transforms操作符，变换图片，这里设置一个几乎透明的颜色过滤器，让用户可以感觉到大图加载完成有明显的视觉变化
+         *
+         */
         GlideApp
                 .with(TwoActivity.this)
                 .load(bigUrl)

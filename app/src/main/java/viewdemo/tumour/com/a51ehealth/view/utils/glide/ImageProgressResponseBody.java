@@ -84,7 +84,7 @@ public class ImageProgressResponseBody extends ResponseBody {
             Log.d("image_progress", "download progress is " + progress);
             if (listener != null && progress != currentProgress) {
                 Observable.just(progress)
-                        .observeOn(AndroidSchedulers.mainThread())//指定doOnTerminate的线程
+                        .observeOn(AndroidSchedulers.mainThread())//回调切换到主线程中，方便外部使用
                         .subscribe(new Consumer<Double>() {
                             @Override
                             public void accept(Double progress) throws Exception {
@@ -94,6 +94,7 @@ public class ImageProgressResponseBody extends ResponseBody {
             }
             if (listener != null && totalBytesRead == fullLength) {
                 String url = getKey(ImageProgressInterceptor.LISTENER_MAP, listener);
+                //下载完成，移除监听
                 ImageProgressInterceptor.removeListener(url);
             }
             currentProgress = progress;

@@ -35,7 +35,7 @@ public class ImageProgressInterceptor implements Interceptor {
     /*移除监听的工具类*/
     public static void removeListener(String url) {
         LISTENER_MAP.remove(url);
-        Log.e("rrrrrrrrrrrr","remove");
+
     }
 
 

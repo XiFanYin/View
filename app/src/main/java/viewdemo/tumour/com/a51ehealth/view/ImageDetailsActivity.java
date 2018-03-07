@@ -1,7 +1,6 @@
 package viewdemo.tumour.com.a51ehealth.view;
 
 import android.app.SharedElementCallback;
-import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -13,8 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import viewdemo.tumour.com.a51ehealth.view.Adapter.ImageFragmentPagerAdapter;
-import viewdemo.tumour.com.a51ehealth.view.Adapter.ImagePagerAdapter;
-import viewdemo.tumour.com.a51ehealth.view.R;
 import viewdemo.tumour.com.a51ehealth.view.base.BaseActivity;
 import viewdemo.tumour.com.a51ehealth.view.bean.ImageUrl;
 import viewdemo.tumour.com.a51ehealth.view.weight.GlideView.SlideViewPager;

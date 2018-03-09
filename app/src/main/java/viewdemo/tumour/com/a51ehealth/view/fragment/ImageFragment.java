@@ -28,7 +28,6 @@ import android.widget.RelativeLayout;
 
 import com.github.chrisbanes.photoview.PhotoView;
 
-import viewdemo.tumour.com.a51ehealth.view.Adapter.ImagePagerAdapter;
 import viewdemo.tumour.com.a51ehealth.view.R;
 import viewdemo.tumour.com.a51ehealth.view.bean.ImageUrl;
 import viewdemo.tumour.com.a51ehealth.view.utils.glide.GlideApp;

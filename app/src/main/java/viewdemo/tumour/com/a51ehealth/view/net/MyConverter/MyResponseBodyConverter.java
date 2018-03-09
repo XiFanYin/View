@@ -46,6 +46,7 @@ public class MyResponseBodyConverter<T> implements Converter<ResponseBody, T> {
 
         MediaType mediaType = value.contentType();
         Charset charset = mediaType != null ? mediaType.charset(UTF_8) : UTF_8;
+        //因为可能用到缓存，所以，需要吧整个数据都返回出去，同时Data里边也要是全部字段的格式
         ByteArrayInputStream bis = new ByteArrayInputStream(gson.toJson(re).getBytes());
         InputStreamReader reader = new InputStreamReader(bis, charset);
         JsonReader jsonReader = gson.newJsonReader(reader);

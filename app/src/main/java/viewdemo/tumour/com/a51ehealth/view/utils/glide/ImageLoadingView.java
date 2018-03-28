@@ -38,7 +38,7 @@ public class ImageLoadingView extends View {
     private double percent = 0.083;
     private float interval;
     private float radius;
-    private int type = 0;
+    private int type = 1;
 
 
     public static class ViewType {

@@ -38,7 +38,7 @@ public class ImageLoadingView extends View {
     private double percent = 0.083;
     private float interval;
     private float radius;
-    private int type = 1;
+    private int type = 0;
 
 
     public static class ViewType {
@@ -99,8 +99,16 @@ public class ImageLoadingView extends View {
         RectF localRect = new RectF(getWidth() / 2 - radius / 2 + interval, getHeight() / 2 - radius / 2 + interval, getWidth() / 2 + radius / 2 - interval, getHeight() / 2 + radius / 2 - interval);
 
         float f1 = (float) (percent * 360);
-        //开始画椭圆
-        canvas.drawArc(localRect, -90, f1, true, mPaint1);
+        if (this.type == ViewType.VIDEO && percent == 1.0) {
+            Path path = new Path();
+            path.moveTo(getWidth() / 2 - radius * 0.7f / 4, (float) (getHeight() / 2 + 1.732 * radius / 6));// 此点为多边形的起点
+            path.lineTo(getWidth() / 2 + radius / 3, getHeight() / 2);
+            path.lineTo(getWidth() / 2 - radius * 0.7f / 4, (float) (getHeight() / 2 - 1.732 * radius / 6));
+            path.close();
+            canvas.drawPath(path, mPaint1);
+        } else {
+            canvas.drawArc(localRect, -90, f1, true, mPaint1);
+        }
         canvas.save();
         //开始画圆
         canvas.drawCircle(getWidth() / 2, getHeight() / 2, radius / 2 - interval / 3, mPaint2);

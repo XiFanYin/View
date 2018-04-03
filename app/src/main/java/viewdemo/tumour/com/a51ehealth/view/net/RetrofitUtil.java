@@ -13,6 +13,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import viewdemo.tumour.com.a51ehealth.view.net.API.Constant;
 import viewdemo.tumour.com.a51ehealth.view.net.MeInterceptor.AddParamInterceptor;
 import viewdemo.tumour.com.a51ehealth.view.net.MyConverter.MyConverterFactory;
+import viewdemo.tumour.com.a51ehealth.view.net.cookie.CookiesManager;
 import viewdemo.tumour.com.a51ehealth.view.utils.SPutils.SPUtils;
 
 
@@ -79,6 +80,7 @@ public class RetrofitUtil {
                         return null;
                     }
                 })
+                .cookieJar(new CookiesManager())//如是混合开发，需要添加cookie管理
                 .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS))
                 .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)//设置连接超时时间
                 .readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)

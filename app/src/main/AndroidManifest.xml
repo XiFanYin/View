@@ -31,6 +31,8 @@
 
         <activity android:name=".ImageDetailsActivity" />
 
+        <activity android:name=".WebActivity"/>
+
 
         <!--拍照需要用的-->
         <provider

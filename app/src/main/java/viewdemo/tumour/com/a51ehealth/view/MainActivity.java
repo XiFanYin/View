@@ -47,6 +47,7 @@ import viewdemo.tumour.com.a51ehealth.view.net.Observer.BaseObserver;
 import viewdemo.tumour.com.a51ehealth.view.net.RetrofitUtil;
 import viewdemo.tumour.com.a51ehealth.view.net.Schedulers.RxSchedulers;
 import viewdemo.tumour.com.a51ehealth.view.net.UpFile.UpFileUtils;
+import viewdemo.tumour.com.a51ehealth.view.net.cookie.WebViewUtils;
 import viewdemo.tumour.com.a51ehealth.view.net.utils.NetworkDetector;
 import viewdemo.tumour.com.a51ehealth.view.utils.PhoneUtils.BottomPopUpDialog;
 import viewdemo.tumour.com.a51ehealth.view.utils.PhoneUtils.PhotoUtils;
@@ -67,6 +68,7 @@ public class MainActivity extends BaseActivity {
     private View btn5;
     private View btn6;
     private View btn7;
+    private View btn8;
     private File file2;
     private Uri camera_uri;
     private static final int REQUEST_PICTURE = 400;
@@ -93,6 +95,7 @@ public class MainActivity extends BaseActivity {
         btn5 = findViewById(R.id.btn5);
         btn6 = findViewById(R.id.btn6);
         btn7 = findViewById(R.id.btn7);
+        btn8 = findViewById(R.id.btn8);
         tv = findViewById(R.id.tv);
         image = findViewById(R.id.image);
 
@@ -107,6 +110,7 @@ public class MainActivity extends BaseActivity {
         btn5.setOnClickListener(this);
         btn6.setOnClickListener(this);
         btn7.setOnClickListener(this);
+        btn8.setOnClickListener(this);
         image.setOnClickListener(this);
     }
 
@@ -184,6 +188,11 @@ public class MainActivity extends BaseActivity {
 
                 break;
 
+            case R.id.btn8:
+
+                jumpToActivity(WebActivity.class);
+
+                break;
 
         }
 
@@ -196,7 +205,7 @@ public class MainActivity extends BaseActivity {
         RetrofitUtil.
                 getInstance()
                 .create(API.class)
-                .Login("hewang", "030303")
+                .Login("yinfeilong", "88888888")
                 .compose(RxSchedulers.io_main())
                 .compose(bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new BaseObserver<LoginBean>() {

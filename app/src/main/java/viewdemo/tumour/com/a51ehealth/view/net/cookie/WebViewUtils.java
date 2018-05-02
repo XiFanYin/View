@@ -24,7 +24,6 @@ public class WebViewUtils {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             CookieSyncManager.createInstance(App.getApplication());
         }
-
         CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.setCookie(url, cookie);//如果没有特殊需求，这里只需要将session id以"key=value"形式作为cookie即可
         String newCookie = cookieManager.getCookie(url);

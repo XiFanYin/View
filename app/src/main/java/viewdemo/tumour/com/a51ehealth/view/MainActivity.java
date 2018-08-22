@@ -316,7 +316,7 @@ public class MainActivity extends BaseActivity {
 
 
     private void method4() {
-        //这里是创建了两个上流，一个是false 一个是true对吧
+        //这里是完成先加载缓存，后加载网络更新缓存，这里有一个问题，当app第一次打开这个页面时候会出现请求两次，之后不会请求多次
         Observable.just(false, NetworkDetector.isNetworkReachable())
                 .flatMap(new Function<Boolean, ObservableSource<Patient>>() {
 

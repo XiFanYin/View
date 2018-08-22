@@ -27,6 +27,8 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
@@ -312,25 +314,33 @@ public class MainActivity extends BaseActivity {
                 });
     }
 
-    private void method4() {
 
-        CacheProviderUtils
-                .getInstance()
-                .using(Provider.class)
-                .getPatientInfo(RetrofitUtil
-                        .getInstance()
-                        .create(API.class)
-                        .getPatientInfo(1, 2), new DynamicKey("eee"), new EvictDynamicKey(NetworkDetector.isNetworkReachable()))
+    private void method4() {
+        //这里是创建了两个上流，一个是false 一个是true对吧
+        Observable.just(false, NetworkDetector.isNetworkReachable())
+                .flatMap(new Function<Boolean, ObservableSource<Patient>>() {
+
+                    @Override
+                    public ObservableSource<Patient> apply(Boolean aBoolean) throws Exception {
+                        return CacheProviderUtils.getInstance().using(Provider.class)
+                                .getPatientInfo(RetrofitUtil
+                                        .getInstance()
+                                        .create(API.class)
+                                        .getPatientInfo(1, 2), new DynamicKey("eee"), new EvictDynamicKey(aBoolean));
+                    }
+                })
                 .compose(RxSchedulers.io_main())
                 .compose(bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new BaseObserver<Patient>() {
                     @Override
                     public void onNext(Patient patient) {
-                        tv.setText(new Gson().toJson(patient) + "token必须保存起来，这样在上传图片和下载图片的时候，请求头里边需要放入的参数");
 
+                        tv.setText(new Gson().toJson(patient) + "token必须保存起来，这样在上传图片和下载图片的时候，请求头里边需要放入的参数");
                         Log.e("BeanJson3", new Gson().toJson(patient));
+
                     }
                 });
+
 
     }
 

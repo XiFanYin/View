@@ -205,7 +205,7 @@ public class MainActivity extends BaseActivity {
         RetrofitUtil.
                 getInstance()
                 .create(API.class)
-                .Login("yinfeilong", "88888888")
+                .Login("wangyong", "111111")
                 .compose(RxSchedulers.io_main())
                 .compose(bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new BaseObserver<LoginBean>() {

@@ -316,19 +316,30 @@ public class MainActivity extends BaseActivity {
 
 
     private void method4() {
-        //这里是完成先加载缓存，后加载网络更新缓存，这里有一个问题，当app第一次打开这个页面时候会出现请求两次，之后不会请求多次
-        Observable.just(false, NetworkDetector.isNetworkReachable())
-                .flatMap(new Function<Boolean, ObservableSource<Patient>>() {
 
+        //只要没网请求缓存就会提示用户没有网，有缓存就展示缓存，没缓存就不展示缓存
+        CacheProviderUtils.getInstance().using(Provider.class)
+                .getPatientInfo(Observable.empty(), new DynamicKey("eee"), new EvictDynamicKey(false))
+                .compose(RxSchedulers.io_main())
+                .compose(bindUntilEvent(ActivityEvent.DESTROY))
+                .subscribe(new BaseObserver<Patient>() {
                     @Override
-                    public ObservableSource<Patient> apply(Boolean aBoolean) throws Exception {
-                        return CacheProviderUtils.getInstance().using(Provider.class)
-                                .getPatientInfo(RetrofitUtil
-                                        .getInstance()
-                                        .create(API.class)
-                                        .getPatientInfo(1, 2), new DynamicKey("eee"), new EvictDynamicKey(aBoolean));
+                    public void onNext(Patient patient) {
+
+                        tv.setText(new Gson().toJson(patient) + "token必须保存起来，这样在上传图片和下载图片的时候，请求头里边需要放入的参数");
+                        Log.e("BeanJson1", new Gson().toJson(patient));
+
                     }
-                })
+                });
+
+        //只要是没网就会抛出来错误CompositeException里边包裹两个错误：ConnectException 和RxCacheException
+        //有网参数正确就是正常请求缓存，展示结果
+        //有网参数错误就会报错来错误CompositeException里边包裹两个错误：ApiException和RxCacheException
+        CacheProviderUtils.getInstance().using(Provider.class)
+                .getPatientInfo(RetrofitUtil
+                        .getInstance()
+                        .create(API.class)
+                        .getPatientInfo(1, 2), new DynamicKey("eee"), new EvictDynamicKey(true))
                 .compose(RxSchedulers.io_main())
                 .compose(bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new BaseObserver<Patient>() {

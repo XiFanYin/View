@@ -318,6 +318,7 @@ public class MainActivity extends BaseActivity {
     private void method4() {
 
         //只要没网请求缓存就会提示用户没有网，有缓存就展示缓存，没缓存就不展示缓存
+
         CacheProviderUtils.getInstance().using(Provider.class)
                 .getPatientInfo(Observable.empty(), new DynamicKey("eee"), new EvictDynamicKey(false))
                 .compose(RxSchedulers.io_main())
@@ -338,8 +339,8 @@ public class MainActivity extends BaseActivity {
         CacheProviderUtils.getInstance().using(Provider.class)
                 .getPatientInfo(RetrofitUtil
                         .getInstance()
-                        .create(API.class)
-                        .getPatientInfo(1, 2), new DynamicKey("eee"), new EvictDynamicKey(true))
+                        .create(API.class)                                                      //这里参数写成动态，防止数据呗驱除
+                        .getPatientInfo(1, 2), new DynamicKey("eee"), new EvictDynamicKey(NetworkDetector.isNetworkReachable()))
                 .compose(RxSchedulers.io_main())
                 .compose(bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new BaseObserver<Patient>() {

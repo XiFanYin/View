@@ -25,11 +25,7 @@ public class ApiErrorHelper {
     public static void handleCommonError(Context context, Throwable e) {
 
         //没有使用缓存，然后可能抛出来的异常
-        if (e instanceof ConnectException) {
-
-            Toast.makeText(context, "服务器连接超时", Toast.LENGTH_SHORT).show();
-
-        } else if (e instanceof SocketTimeoutException) {
+        if (e instanceof SocketTimeoutException) {
 
             Toast.makeText(context, "服务器响应超时", Toast.LENGTH_SHORT).show();
 
@@ -39,7 +35,7 @@ public class ApiErrorHelper {
             Toast.makeText(context, exception.getMessage(), Toast.LENGTH_SHORT).show();
 
         } else {
-            //使用缓存可能跑出来的异常，这里是一个异常集合
+            //使用缓存可能跑出来的异常，这里是一个异常集合,
             if (e instanceof CompositeException) {
                 CompositeException eee = (CompositeException) e;
                 List<Throwable> exceptions = eee.getExceptions();
@@ -47,8 +43,6 @@ public class ApiErrorHelper {
                     if (exceptions.get(i) instanceof ApiException) {
                         ApiException apiException = (ApiException) exceptions.get(i);
                         Toast.makeText(context, apiException.getMessage(), Toast.LENGTH_SHORT).show();
-                    } else if (exceptions.get(i) instanceof SocketTimeoutException) {
-                        Toast.makeText(context, "服务器响应超时", Toast.LENGTH_SHORT).show();
                     }
 
                 }

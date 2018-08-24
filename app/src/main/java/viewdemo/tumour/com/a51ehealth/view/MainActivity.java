@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -318,7 +319,6 @@ public class MainActivity extends BaseActivity {
     private void method4() {
 
         //只要没网请求缓存就会提示用户没有网，有缓存就展示缓存，没缓存就不展示缓存
-
         CacheProviderUtils.getInstance().using(Provider.class)
                 .getPatientInfo(Observable.empty(), new DynamicKey("eee"), new EvictDynamicKey(false))
                 .compose(RxSchedulers.io_main())
@@ -333,22 +333,21 @@ public class MainActivity extends BaseActivity {
                     }
                 });
 
-        //只要是没网就会抛出来错误CompositeException里边包裹两个错误：ConnectException 和RxCacheException
-        //有网参数正确就是正常请求缓存，展示结果
-        //有网参数错误就会报错来错误CompositeException里边包裹两个错误：ApiException和RxCacheException
-        CacheProviderUtils.getInstance().using(Provider.class)
-                .getPatientInfo(RetrofitUtil
-                        .getInstance()
-                        .create(API.class)                                                      //这里参数写成动态，防止数据呗驱除
-                        .getPatientInfo(1, 2), new DynamicKey("eee"), new EvictDynamicKey(NetworkDetector.isNetworkReachable()))
+
+        RetrofitUtil
+                .getInstance()
+                .create(API.class)
+                .getPatientInfo(1, 2)
+                .flatMap(it -> {
+                        return CacheProviderUtils.getInstance().using(Provider.class)
+                                .getPatientInfo(Observable.just(it), new DynamicKey("eee"), new EvictDynamicKey(true));
+                })
                 .compose(RxSchedulers.io_main())
-                .compose(bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribe(new BaseObserver<Patient>() {
                     @Override
                     public void onNext(Patient patient) {
-
                         tv.setText(new Gson().toJson(patient) + "token必须保存起来，这样在上传图片和下载图片的时候，请求头里边需要放入的参数");
-                        Log.e("BeanJson3", new Gson().toJson(patient));
+                        Log.e("BeanJson3",new Gson().toJson(patient) );
 
                     }
                 });

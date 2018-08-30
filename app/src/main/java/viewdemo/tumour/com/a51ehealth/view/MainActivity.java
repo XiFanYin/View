@@ -318,23 +318,13 @@ public class MainActivity extends BaseActivity {
     //注意：这里是先读取缓存，然后再请求网络的思路
     private void method4() {
 
-        //只要没网请求缓存就会提示用户请检查您的网络状态，有缓存就展示缓存，没缓存就不展示缓存
-        CacheProviderUtils.getInstance().using(Provider.class)
+        //只要没网请求缓存就会提示用户请检查您的网络状态，有缓存就展示缓存，没缓存就不展示缓存,注意切换到子线程中
+        Observable<Patient> cache = CacheProviderUtils.getInstance().using(Provider.class)
                 .getPatientInfo(Observable.empty(), new DynamicKey("eee"), new EvictDynamicKey(false))
-                .compose(RxSchedulers.io_main())
-                .compose(bindUntilEvent(ActivityEvent.DESTROY))
-                .subscribe(new BaseObserver<Patient>() {
-                    @Override
-                    public void onNext(Patient patient) {
+                .subscribeOn(Schedulers.io());
 
-                        tv.setText(new Gson().toJson(patient) + "token必须保存起来，这样在上传图片和下载图片的时候，请求头里边需要放入的参数");
-                        Log.e("BeanJson1", new Gson().toJson(patient));
-
-                    }
-                });
-
-
-        RetrofitUtil
+        //请求网络获取数据，注意切换到子线程中
+        Observable<Patient> netWork = RetrofitUtil
                 .getInstance()
                 .create(API.class)
                 .getPatientInfo(1, 2)
@@ -342,7 +332,12 @@ public class MainActivity extends BaseActivity {
                     return CacheProviderUtils.getInstance().using(Provider.class)
                             .getPatientInfo(Observable.just(it), new DynamicKey("eee"), new EvictDynamicKey(true));
                 })
-                .compose(RxSchedulers.io_main())
+                .subscribeOn(Schedulers.io());
+
+        //不同的数据源按照先后顺序合并，下流获取两次,注意这里的线程不能多次切换，不能使用RxSchedulers中的io_main()多次切换
+        Observable.concat(cache, netWork)
+                .subscribeOn(Schedulers.io())//指定联网请求的线程，事件产生的线程
+                .observeOn(AndroidSchedulers.mainThread())//指定doOnTerminate的线程
                 .subscribe(new BaseObserver<Patient>() {
                     @Override
                     public void onNext(Patient patient) {
@@ -351,8 +346,6 @@ public class MainActivity extends BaseActivity {
 
                     }
                 });
-
-
     }
 
     private void method6() {

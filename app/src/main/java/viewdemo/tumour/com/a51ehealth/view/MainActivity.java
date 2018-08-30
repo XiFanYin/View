@@ -334,7 +334,7 @@ public class MainActivity extends BaseActivity {
                 })
                 .subscribeOn(Schedulers.io());
 
-        //不同的数据源按照先后顺序合并，下流获取两次,注意这里的线程不能多次切换，不能使用RxSchedulers中的io_main()多次切换
+        //concat串行执行，不能用merge并行操作符，会偶现不走onNext的bug
         Observable.concat(cache, netWork)
                 .subscribeOn(Schedulers.io())//指定联网请求的线程，事件产生的线程
                 .observeOn(AndroidSchedulers.mainThread())//指定doOnTerminate的线程

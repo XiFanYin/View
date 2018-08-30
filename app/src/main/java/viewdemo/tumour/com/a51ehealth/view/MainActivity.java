@@ -119,7 +119,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initData(boolean hasNetWork) {
-
+        method4();
     }
 
     @Override
@@ -318,12 +318,12 @@ public class MainActivity extends BaseActivity {
     //注意：这里是先读取缓存，然后再请求网络的思路
     private void method4() {
 
-        //只要没网请求缓存就会提示用户请检查您的网络状态，有缓存就展示缓存，没缓存就不展示缓存,注意切换到子线程中
+        //有缓存就展示缓存，没缓存就不展示缓存，
         Observable<Patient> cache = CacheProviderUtils.getInstance().using(Provider.class)
                 .getPatientInfo(Observable.empty(), new DynamicKey("eee"), new EvictDynamicKey(false))
                 .subscribeOn(Schedulers.io());
 
-        //请求网络获取数据，注意切换到子线程中
+        //请求网络获取数据，注意切换到子线程中，再切换到主线程中，要不出现网络请求错误时候，使用concat会偶现不走onNext的bug，导致缓存数据无法展示
         Observable<Patient> netWork = RetrofitUtil
                 .getInstance()
                 .create(API.class)
@@ -332,9 +332,10 @@ public class MainActivity extends BaseActivity {
                     return CacheProviderUtils.getInstance().using(Provider.class)
                             .getPatientInfo(Observable.just(it), new DynamicKey("eee"), new EvictDynamicKey(true));
                 })
-                .subscribeOn(Schedulers.io());
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
 
-        //concat串行执行，不能用merge并行操作符，会偶现不走onNext的bug
+        //concat是串行执行。这里不能用merge之类的并行操作符，要不出现网络请求错误时候，会偶现不走onNext的bug，原因目前不知道为什么
         Observable.concat(cache, netWork)
                 .subscribeOn(Schedulers.io())//指定联网请求的线程，事件产生的线程
                 .observeOn(AndroidSchedulers.mainThread())//指定doOnTerminate的线程

@@ -119,7 +119,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initData(boolean hasNetWork) {
-        method4();
+
     }
 
     @Override

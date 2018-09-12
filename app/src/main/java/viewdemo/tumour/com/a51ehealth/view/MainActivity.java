@@ -40,7 +40,6 @@ import io.rx_cache2.EvictDynamicKey;
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import viewdemo.tumour.com.a51ehealth.view.base.BaseActivity;
-import viewdemo.tumour.com.a51ehealth.view.bean.ImageMessage;
 import viewdemo.tumour.com.a51ehealth.view.bean.LoginBean;
 import viewdemo.tumour.com.a51ehealth.view.bean.Patient;
 import viewdemo.tumour.com.a51ehealth.view.bean.UpImage;
@@ -316,28 +315,29 @@ public class MainActivity extends BaseActivity {
                 });
     }
 
-
     //注意：这里是先读取缓存，然后再请求网络的思路
     private void method4() {
 
-        //获取缓存
+        //只要没网请求缓存就会提示用户请检查您的网络状态，有缓存就展示缓存，没缓存就不展示缓存,注意切换到子线程中
         Observable<Patient> cache = CacheProviderUtils.getInstance().using(Provider.class)
-                .getPatientInfo(Observable.empty(), new DynamicKey("eee"), new EvictDynamicKey(false))//这里的标记可以根据是第一次进去还是刷新来决定是否读取缓存，我这里写成了false，每次都去读取缓存，不管刷新还是第一次进入
+                .getPatientInfo(Observable.empty(), new DynamicKey("eee"), new EvictDynamicKey(false))
                 .subscribeOn(Schedulers.io());
 
-        //请求网络
-        RetrofitUtil
+        //请求网络获取数据，注意切换到子线程中
+        Observable<Patient> netWork = RetrofitUtil
                 .getInstance()
                 .create(API.class)
                 .getPatientInfo(1, 2)
-                .flatMap(it -> {//更新缓存，如果请求错误，就不会去更新
+                .flatMap(it -> {//这里是添加缓存，如果API异常，就会直接在自定义的解析器中抛出异常，代码不会走到这里。
                     return CacheProviderUtils.getInstance().using(Provider.class)
                             .getPatientInfo(Observable.just(it), new DynamicKey("eee"), new EvictDynamicKey(true));
                 })
-                .startWith(cache)//读取缓存在请求网络之前
-                .distinctUntilChanged()//两个相邻的数据对象不相同才去刷新，否则不去刷新----需要重写equal方法去比较内容是否相同
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+
+        //concat串行执行，不能用merge并行操作符，会偶现不走onNext的bug
+        Observable.concat(cache, netWork)
+                .subscribeOn(Schedulers.io())//指定联网请求的线程，事件产生的线程
+                .observeOn(AndroidSchedulers.mainThread())//指定doOnTerminate的线程
                 .subscribe(new BaseObserver<Patient>() {
                     @Override
                     public void onNext(Patient patient) {
@@ -346,8 +346,6 @@ public class MainActivity extends BaseActivity {
 
                     }
                 });
-
-
     }
 
     private void method6() {

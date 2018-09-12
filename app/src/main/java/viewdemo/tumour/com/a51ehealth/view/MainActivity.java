@@ -40,6 +40,7 @@ import io.rx_cache2.EvictDynamicKey;
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import viewdemo.tumour.com.a51ehealth.view.base.BaseActivity;
+import viewdemo.tumour.com.a51ehealth.view.bean.ImageMessage;
 import viewdemo.tumour.com.a51ehealth.view.bean.LoginBean;
 import viewdemo.tumour.com.a51ehealth.view.bean.Patient;
 import viewdemo.tumour.com.a51ehealth.view.bean.UpImage;
@@ -315,6 +316,7 @@ public class MainActivity extends BaseActivity {
                 });
     }
 
+
     //注意：这里是先读取缓存，然后再请求网络的思路
     private void method4() {
 
@@ -333,6 +335,7 @@ public class MainActivity extends BaseActivity {
                             .getPatientInfo(Observable.just(it), new DynamicKey("eee"), new EvictDynamicKey(true));
                 })
                 .startWith(cache)//读取缓存在请求网络之前
+                .distinctUntilChanged()//两个相邻的数据对象不想通才去刷新，否则不去刷新----需要重写equal方法去比较内容是否相同
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new BaseObserver<Patient>() {
@@ -340,6 +343,7 @@ public class MainActivity extends BaseActivity {
                     public void onNext(Patient patient) {
                         tv.setText(new Gson().toJson(patient) + "token必须保存起来，这样在上传图片和下载图片的时候，请求头里边需要放入的参数");
                         Log.e("BeanJson3", new Gson().toJson(patient));
+
                     }
                 });
 

@@ -335,7 +335,7 @@ public class MainActivity extends BaseActivity {
                             .getPatientInfo(Observable.just(it), new DynamicKey("eee"), new EvictDynamicKey(true));
                 })
                 .startWith(cache)//读取缓存在请求网络之前
-                .distinctUntilChanged()//两个相邻的数据对象不想通才去刷新，否则不去刷新----需要重写equal方法去比较内容是否相同
+                .distinctUntilChanged()//两个相邻的数据对象不相同才去刷新，否则不去刷新----需要重写equal方法去比较内容是否相同
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new BaseObserver<Patient>() {

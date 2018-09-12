@@ -318,35 +318,32 @@ public class MainActivity extends BaseActivity {
     //注意：这里是先读取缓存，然后再请求网络的思路
     private void method4() {
 
-        //有缓存就展示缓存，没缓存就不展示缓存，
+        //获取缓存
         Observable<Patient> cache = CacheProviderUtils.getInstance().using(Provider.class)
                 .getPatientInfo(Observable.empty(), new DynamicKey("eee"), new EvictDynamicKey(false))
                 .subscribeOn(Schedulers.io());
 
-        //请求网络获取数据，注意切换到子线程中，再切换到主线程中，要不出现网络请求错误时候，使用concat会偶现不走onNext的bug，导致缓存数据无法展示
-        Observable<Patient> netWork = RetrofitUtil
+        //请求网络
+        RetrofitUtil
                 .getInstance()
                 .create(API.class)
                 .getPatientInfo(1, 2)
-                .flatMap(it -> {//这里是添加缓存，如果API异常，就会直接在自定义的解析器中抛出异常，代码不会走到这里。
+                .flatMap(it -> {//更新缓存，如果请求错误，就不会去更新
                     return CacheProviderUtils.getInstance().using(Provider.class)
                             .getPatientInfo(Observable.just(it), new DynamicKey("eee"), new EvictDynamicKey(true));
                 })
+                .startWith(cache)//读取缓存在请求网络之前
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-
-        //concat是串行执行。这里不能用merge之类的并行操作符，要不出现网络请求错误时候，会偶现不走onNext的bug，原因目前不知道为什么
-        Observable.concat(cache, netWork)
-                .subscribeOn(Schedulers.io())//指定联网请求的线程，事件产生的线程
-                .observeOn(AndroidSchedulers.mainThread())//指定doOnTerminate的线程
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new BaseObserver<Patient>() {
                     @Override
                     public void onNext(Patient patient) {
                         tv.setText(new Gson().toJson(patient) + "token必须保存起来，这样在上传图片和下载图片的时候，请求头里边需要放入的参数");
                         Log.e("BeanJson3", new Gson().toJson(patient));
-
                     }
                 });
+
+
     }
 
     private void method6() {

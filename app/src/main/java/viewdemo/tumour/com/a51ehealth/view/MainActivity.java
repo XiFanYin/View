@@ -322,7 +322,7 @@ public class MainActivity extends BaseActivity {
 
         //获取缓存
         Observable<Patient> cache = CacheProviderUtils.getInstance().using(Provider.class)
-                .getPatientInfo(Observable.empty(), new DynamicKey("eee"), new EvictDynamicKey(false))
+                .getPatientInfo(Observable.empty(), new DynamicKey("eee"), new EvictDynamicKey(false))//这里的标记可以根据是第一次进去还是刷新来决定是否读取缓存，我这里写成了false，每次都去读取缓存，不管刷新还是第一次进入
                 .subscribeOn(Schedulers.io());
 
         //请求网络

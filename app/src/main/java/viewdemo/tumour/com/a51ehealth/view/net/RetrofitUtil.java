@@ -1,6 +1,7 @@
 package viewdemo.tumour.com.a51ehealth.view.net;
 
 
+import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -102,5 +103,8 @@ public class RetrofitUtil {
         return mRetrofit.create(service);
     }
 
-
+    public <T> T getProxy(Class<T> tClass) {
+        T t = mRetrofit.create(tClass);
+        return (T) Proxy.newProxyInstance(tClass.getClassLoader(), new Class<?>[] { tClass }, new ProxyHandler(t));
+    }
 }

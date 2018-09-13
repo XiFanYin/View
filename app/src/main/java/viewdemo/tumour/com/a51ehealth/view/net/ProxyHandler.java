@@ -5,17 +5,12 @@ import android.util.Log;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.concurrent.CountDownLatch;
 
 import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
-import viewdemo.tumour.com.a51ehealth.view.bean.LoginBean;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
 import viewdemo.tumour.com.a51ehealth.view.net.API.API;
 import viewdemo.tumour.com.a51ehealth.view.net.Exception.ApiException;
-import viewdemo.tumour.com.a51ehealth.view.net.Observer.BaseObserver;
-import viewdemo.tumour.com.a51ehealth.view.net.Schedulers.RxSchedulers;
 import viewdemo.tumour.com.a51ehealth.view.utils.SPutils.SPUtils;
 
 
@@ -23,8 +18,6 @@ public class ProxyHandler implements InvocationHandler {
 
     private Object mProxyObject;
 
-    int maxRetries = 1;
-    int retryCount;
 
     public ProxyHandler(Object proxyObject) {
         mProxyObject = proxyObject;
@@ -39,42 +32,36 @@ public class ProxyHandler implements InvocationHandler {
                 e.printStackTrace();
             }
             return null;
-        }).retryWhen(throwableObservable -> {
-            return throwableObservable.concatMap(throwable -> {
-                //判断是不是token失效，这里假如token等于8失效
-                if (throwable instanceof ApiException) {
-                    if (((ApiException) throwable).getErrorCode() == 8) {
-                        //如果是token异常，需要去调用更新token
-                        if (++retryCount <= maxRetries) {
-                            Log.e("rrrrrrrrrr", "token错误引起的");
-                            //当这里调用onNext的时候会触发再次请求
-                            return refreshToken();
+        }).retryWhen(new Function<Observable<Throwable>, ObservableSource<?>>() {
+            @Override
+            public ObservableSource<?> apply(Observable<Throwable> throwableObservable)  {
+                return throwableObservable.flatMap(new Function<Throwable, ObservableSource<?>>() {
+                    @Override
+                    public ObservableSource<?> apply(Throwable throwable) throws Exception {
+                        //判断是不是token失效，这里假如token等于8失效
+                        if (throwable instanceof ApiException) {
+                            if (((ApiException) throwable).getErrorCode() == 8) {
+                                return RetrofitUtil.
+                                        getInstance()
+                                        .create(API.class)
+                                        .Login("wangyong", "111111")
+                                        .flatMap(loginBean -> {
+                                            SPUtils.saveString("token", loginBean.getData().getToken());
+                                            Log.e("rrrrrrrrrrrrr", Thread.currentThread().getName());
+                                            return Observable.just(1);
+                                        });
+                            }
                         }
+                        Log.e("rrrrrrrrrrrrr", Thread.currentThread().getName());
+                        return Observable.error(throwable);
                     }
-                }
-                //如果不是直接抛出异常到表层
-                return Observable.error(throwable);
-            });
+                });
+
+
+            }
         });
 
     }
 
-    private Observable<?> refreshToken() {
 
-        RetrofitUtil.
-                getInstance()
-                .create(API.class)
-                .Login("wangyong", "111111")
-                .subscribeOn(Schedulers.io())
-                .subscribe(new BaseObserver<LoginBean>() {
-                    @Override
-                    public void onNext(LoginBean loginBean) {
-                        SPUtils.saveString("token", loginBean.getData().getToken());
-                    }
-                });
-
-        return Observable.just(1);
-
-
-    }
 }

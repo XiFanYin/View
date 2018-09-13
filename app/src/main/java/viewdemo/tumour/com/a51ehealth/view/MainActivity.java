@@ -197,6 +197,9 @@ public class MainActivity extends BaseActivity {
 
                 break;
 
+            default:
+                break;
+
         }
 
 
@@ -214,7 +217,7 @@ public class MainActivity extends BaseActivity {
                 .subscribe(new BaseObserver<LoginBean>() {
                     @Override
                     public void onNext(LoginBean loginBean) {
-                        SPUtils.saveString("token", loginBean.getData().getToken());
+                        SPUtils.saveString("token", loginBean.getData().getToken() + "eee");
 
                         tv.setText(new Gson().toJson(loginBean) + "token必须保存起来，这样在上传图片和下载图片的时候，请求头里边需要放入的参数");
                     }

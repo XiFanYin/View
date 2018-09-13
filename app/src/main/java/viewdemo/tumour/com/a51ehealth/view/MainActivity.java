@@ -217,7 +217,7 @@ public class MainActivity extends BaseActivity {
                 .subscribe(new BaseObserver<LoginBean>() {
                     @Override
                     public void onNext(LoginBean loginBean) {
-                        SPUtils.saveString("token", loginBean.getData().getToken() + "eee");
+                        SPUtils.saveString("token", loginBean.getData().getToken());
 
                         tv.setText(new Gson().toJson(loginBean) + "token必须保存起来，这样在上传图片和下载图片的时候，请求头里边需要放入的参数");
                     }
@@ -322,23 +322,23 @@ public class MainActivity extends BaseActivity {
     private void method4() {
 
         //只读取缓存
-        CacheProviderUtils.getInstance().using(Provider.class)
-                .getPatientInfo(Observable.empty(), new DynamicKey("eee"), new EvictDynamicKey(false))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())//指定doOnTerminate的线程
-                .subscribe(new BaseObserver<Patient>() {
-                    @Override
-                    public void onNext(Patient patient) {
-                        tv.setText(new Gson().toJson(patient) + "token必须保存起来，这样在上传图片和下载图片的时候，请求头里边需要放入的参数");
-                        Log.e("BeanJson3", new Gson().toJson(patient));
-
-                    }
-                });
+//        CacheProviderUtils.getInstance().using(Provider.class)
+//                .getPatientInfo(Observable.empty(), new DynamicKey("eee"), new EvictDynamicKey(false))
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())//指定doOnTerminate的线程
+//                .subscribe(new BaseObserver<Patient>() {
+//                    @Override
+//                    public void onNext(Patient patient) {
+//                        tv.setText(new Gson().toJson(patient) + "token必须保存起来，这样在上传图片和下载图片的时候，请求头里边需要放入的参数");
+//                        Log.e("BeanJson3", new Gson().toJson(patient));
+//
+//                    }
+//                });
 
         //只读取网络
         RetrofitUtil
                 .getInstance()
-                .create(API.class)
+                .getProxy(API.class)
                 .getPatientInfo(1, 2)
                 .flatMap(it -> {//这里是添加缓存，如果API异常，就会直接在自定义的解析器中抛出异常，代码不会走到这里。
                     return CacheProviderUtils.getInstance().using(Provider.class)

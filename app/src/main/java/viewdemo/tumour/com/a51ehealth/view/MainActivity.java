@@ -321,19 +321,19 @@ public class MainActivity extends BaseActivity {
     //注意：这里是先读取缓存，然后再请求网络的思路 ，注意不能使用合并操作符，会出现问题
     private void method4() {
 
-//        //只读取缓存
-//        CacheProviderUtils.getInstance().using(Provider.class)
-//                .getPatientInfo(Observable.empty(), new DynamicKey("eee"), new EvictDynamicKey(false))
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())//指定doOnTerminate的线程
-//                .subscribe(new BaseObserver<Patient>() {
-//                    @Override
-//                    public void onNext(Patient patient) {
-//                        tv.setText(new Gson().toJson(patient) + "token必须保存起来，这样在上传图片和下载图片的时候，请求头里边需要放入的参数");
-//                        Log.e("BeanJson3", new Gson().toJson(patient));
-//
-//                    }
-//                });
+        //只读取缓存
+        CacheProviderUtils.getInstance().using(Provider.class)
+                .getPatientInfo(Observable.empty(), new DynamicKey("eee"), new EvictDynamicKey(false))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//指定doOnTerminate的线程
+                .subscribe(new BaseObserver<Patient>() {
+                    @Override
+                    public void onNext(Patient patient) {
+                        tv.setText(new Gson().toJson(patient) + "token必须保存起来，这样在上传图片和下载图片的时候，请求头里边需要放入的参数");
+                        Log.e("BeanJson3", new Gson().toJson(patient));
+
+                    }
+                });
 
         //只读取网络
         RetrofitUtil

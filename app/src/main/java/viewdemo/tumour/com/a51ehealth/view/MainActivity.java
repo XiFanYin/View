@@ -119,7 +119,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initData(boolean hasNetWork) {
-
+        method4();
     }
 
     @Override
@@ -315,28 +315,13 @@ public class MainActivity extends BaseActivity {
                 });
     }
 
-    //注意：这里是先读取缓存，然后再请求网络的思路
+    //注意：这里是先读取缓存，然后再请求网络的思路 ，注意不能使用合并操作符，会出现问题
     private void method4() {
 
-        //只要没网请求缓存就会提示用户请检查您的网络状态，有缓存就展示缓存，没缓存就不展示缓存,注意切换到子线程中
-        Observable<Patient> cache = CacheProviderUtils.getInstance().using(Provider.class)
+        //只读取缓存
+        CacheProviderUtils.getInstance().using(Provider.class)
                 .getPatientInfo(Observable.empty(), new DynamicKey("eee"), new EvictDynamicKey(false))
-                .subscribeOn(Schedulers.io());
-
-        //请求网络获取数据，注意切换到子线程中
-        Observable<Patient> netWork = RetrofitUtil
-                .getInstance()
-                .create(API.class)
-                .getPatientInfo(1, 2)
-                .flatMap(it -> {//这里是添加缓存，如果API异常，就会直接在自定义的解析器中抛出异常，代码不会走到这里。
-                    return CacheProviderUtils.getInstance().using(Provider.class)
-                            .getPatientInfo(Observable.just(it), new DynamicKey("eee"), new EvictDynamicKey(true));
-                })
-                .subscribeOn(Schedulers.io());
-
-        //concat串行执行，不能用merge并行操作符，会偶现不走onNext的bug
-        Observable.concat(cache, netWork)
-                .subscribeOn(Schedulers.io())//指定联网请求的线程，事件产生的线程
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//指定doOnTerminate的线程
                 .subscribe(new BaseObserver<Patient>() {
                     @Override
@@ -346,6 +331,27 @@ public class MainActivity extends BaseActivity {
 
                     }
                 });
+
+        //只读取网络
+        RetrofitUtil
+                .getInstance()
+                .create(API.class)
+                .getPatientInfo(1, 2)
+                .flatMap(it -> {//这里是添加缓存，如果API异常，就会直接在自定义的解析器中抛出异常，代码不会走到这里。
+                    return CacheProviderUtils.getInstance().using(Provider.class)
+                            .getPatientInfo(Observable.just(it), new DynamicKey("eee"), new EvictDynamicKey(true));
+                })
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())//指定doOnTerminate的线程
+                .subscribe(new BaseObserver<Patient>() {
+                    @Override
+                    public void onNext(Patient patient) {
+                        tv.setText(new Gson().toJson(patient) + "token必须保存起来，这样在上传图片和下载图片的时候，请求头里边需要放入的参数");
+                        Log.e("BeanJson3", new Gson().toJson(patient));
+
+                    }
+                });
+
+
     }
 
     private void method6() {

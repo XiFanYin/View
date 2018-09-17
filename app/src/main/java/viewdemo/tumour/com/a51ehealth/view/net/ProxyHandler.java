@@ -24,12 +24,7 @@ public class ProxyHandler implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) {
         return Observable.just(1).flatMap(o -> {
-            try {
                 return (Observable<?>) method.invoke(mProxyObject, args);
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            }
-            return null;
         }).retryWhen(new Function<Observable<Throwable>, ObservableSource<?>>() {
             @Override
             public ObservableSource<?> apply(Observable<Throwable> throwableObservable) {

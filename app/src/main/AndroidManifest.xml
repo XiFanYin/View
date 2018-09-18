@@ -31,7 +31,9 @@
 
         <activity android:name=".ImageDetailsActivity" />
 
-        <activity android:name=".WebActivity"/>
+        <activity android:name=".WebActivity" />
+
+        <activity android:name=".LoginActivity" />
 
 
         <!--拍照需要用的-->

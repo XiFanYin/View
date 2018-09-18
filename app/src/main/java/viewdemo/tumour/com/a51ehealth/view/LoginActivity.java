@@ -18,6 +18,7 @@ import viewdemo.tumour.com.a51ehealth.view.base.BaseActivity;
 import viewdemo.tumour.com.a51ehealth.view.bean.LoginBean;
 import viewdemo.tumour.com.a51ehealth.view.net.API.API;
 import viewdemo.tumour.com.a51ehealth.view.net.Exception.ApiException;
+import viewdemo.tumour.com.a51ehealth.view.net.Observer.BaseObserver;
 import viewdemo.tumour.com.a51ehealth.view.net.RetrofitUtil;
 import viewdemo.tumour.com.a51ehealth.view.utils.SPutils.SPUtils;
 
@@ -37,8 +38,8 @@ public class LoginActivity extends BaseActivity {
         name = findViewById(R.id.name);
         pwd = findViewById(R.id.pwd);
         login = findViewById(R.id.login);
-        name.setText("wangyong" );
-        pwd.setText("111111" );
+        name.setText("wangyong");
+        pwd.setText("111111");
     }
 
     @Override
@@ -61,19 +62,14 @@ public class LoginActivity extends BaseActivity {
                 String names = name.getText().toString();
                 String pwds = pwd.getText().toString();
 
-                if (!TextUtils.isEmpty(names) &&! TextUtils.isEmpty(pwds)) {
+                if (!TextUtils.isEmpty(names) && !TextUtils.isEmpty(pwds)) {
                     RetrofitUtil.
                             getInstance()
                             .create(API.class)
                             .Login(names, pwds)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Observer<LoginBean>() {
-                                @Override
-                                public void onSubscribe(Disposable d) {
-                                    //实际开发注意页面关闭切断流
-                                }
-
+                            .subscribe(new BaseObserver<LoginBean>() {
                                 @Override
                                 public void onNext(LoginBean loginBean) {
                                     SPUtils.saveString("token", loginBean.getData().getToken());
@@ -83,19 +79,6 @@ public class LoginActivity extends BaseActivity {
                                     finish();
                                 }
 
-                                @Override
-                                public void onError(Throwable e) {
-
-                                    Intent intent = new Intent();
-                                    intent.putExtra("loginSucceed", false);
-                                    setResult(Activity.RESULT_OK, intent);
-                                    finish();
-                                }
-
-                                @Override
-                                public void onComplete() {
-
-                                }
                             });
 
 
@@ -106,12 +89,12 @@ public class LoginActivity extends BaseActivity {
 
                 break;
 
-                default:
-                    Intent intent = new Intent();
-                    intent.putExtra("loginSucceed", false);
-                    setResult(Activity.RESULT_OK, intent);
-                    finish();
-                    break;
+            default:
+                Intent intent = new Intent();
+                intent.putExtra("loginSucceed", false);
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+                break;
         }
 
     }

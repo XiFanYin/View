@@ -60,7 +60,6 @@ public class ErrorUtils {
                                         .flatMap(it -> Observable.just(isqurst))
                                         .filter(o -> isqurst)
                                         .flatMap(o -> {
-                                            Log.e("rrrrrrrr", "eeeeeeeeeeee");
                                             return Observable.error(new ApiException(-999, "这表示特殊错误，表示要重复去请求"));
                                         });
                             }
@@ -131,7 +130,6 @@ public class ErrorUtils {
                                                     .flatMap(it -> Observable.just(isqurst))
                                                     .filter(o -> isqurst)
                                                     .flatMap(o -> {
-                                                        Log.e("rrrrrr", "rrrrrrrrrr");
                                                         return Observable.error(new ApiException(-999, "这表示特殊错误，表示要重复去请求"));
                                                     });
                                         }
@@ -170,7 +168,7 @@ public class ErrorUtils {
      * @param <T>
      * @return
      */
-    public static <T> ObservableTransformer<T, T> tokenErrorHandlerJumpLogon(Fragment fragment) {
+    public static <T> ObservableTransformer<T, T> tokenErrorHandlerJumpLogin(Fragment fragment) {
         return tokenErrorHandlerJumpLogin(fragment.getActivity());
     }
 }

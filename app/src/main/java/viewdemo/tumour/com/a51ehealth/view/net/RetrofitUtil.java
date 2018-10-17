@@ -15,7 +15,6 @@ import viewdemo.tumour.com.a51ehealth.view.net.API.Constant;
 import viewdemo.tumour.com.a51ehealth.view.net.MeInterceptor.AddParamInterceptor;
 import viewdemo.tumour.com.a51ehealth.view.net.MyConverter.MyConverterFactory;
 import viewdemo.tumour.com.a51ehealth.view.net.cookie.CookiesManager;
-import viewdemo.tumour.com.a51ehealth.view.net.tookenExceed.ProxyHandler;
 import viewdemo.tumour.com.a51ehealth.view.utils.SPutils.SPUtils;
 
 
@@ -104,8 +103,5 @@ public class RetrofitUtil {
         return mRetrofit.create(service);
     }
 
-    public <T> T getProxy(Class<T> tClass) {
-        T t = mRetrofit.create(tClass);
-        return (T) Proxy.newProxyInstance(tClass.getClassLoader(), new Class<?>[] { tClass }, new ProxyHandler(t));
-    }
+
 }

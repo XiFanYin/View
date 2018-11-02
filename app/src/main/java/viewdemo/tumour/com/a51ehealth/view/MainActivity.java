@@ -249,7 +249,7 @@ public class MainActivity extends BaseActivity {
         RetrofitUtil
                 .getInstance()
                 .create(API.class)
-                .downloadFile("http://47.93.136.56:7012/app/doctorhelper/doctorhelper.apk")
+                .downloadFile("https://dldir1.qq.com/qqfile/qq/PCTIM2.3.0/20979/TIM2.3.0.20979.exe")
                 .subscribeOn(Schedulers.io())//指定联网的线程
                 .observeOn(AndroidSchedulers.mainThread())//为了显示进度条，这里指定下边map的线程为Main线程
                 .map(new Function<ResponseBody, ResponseBody>() {

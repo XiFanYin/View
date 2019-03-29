@@ -111,7 +111,7 @@ public class ErrorUtils {
                                     synchronized (ErrorUtils.class) {
                                         if (isqurst) {
                                             isqurst = false;
-                                            //这里异步去请求，然后再确定返回值
+                                            //这里异步去请求，然后再确定返回值，这里还需要优化，比如用户跳转后，没有点击登录，而是点击返回了
                                             return new AvoidOnResult(activity)
                                                     .startForResult(LoginActivity.class)
                                                     .filter(it -> it.getResultCode() == Activity.RESULT_OK)
@@ -126,6 +126,7 @@ public class ErrorUtils {
                                                     });
 
                                         } else {
+                                            //这里也需要优化，不能开启N-1个线程，等待阻塞队列优化
                                             return Observable.interval(50, TimeUnit.MILLISECONDS)
                                                     .flatMap(it -> Observable.just(isqurst))
                                                     .filter(o -> isqurst)

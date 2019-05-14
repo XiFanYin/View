@@ -16,12 +16,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.tbruyelle.rxpermissions2.RxPermissions;
-import com.trello.rxlifecycle2.android.ActivityEvent;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -29,7 +27,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
@@ -50,8 +47,6 @@ import viewdemo.tumour.com.a51ehealth.view.net.Observer.BaseObserver;
 import viewdemo.tumour.com.a51ehealth.view.net.RetrofitUtil;
 import viewdemo.tumour.com.a51ehealth.view.net.Schedulers.RxSchedulers;
 import viewdemo.tumour.com.a51ehealth.view.net.UpFile.UpFileUtils;
-import viewdemo.tumour.com.a51ehealth.view.net.cookie.WebViewUtils;
-import viewdemo.tumour.com.a51ehealth.view.net.utils.NetworkDetector;
 import viewdemo.tumour.com.a51ehealth.view.utils.PhoneUtils.BottomPopUpDialog;
 import viewdemo.tumour.com.a51ehealth.view.utils.PhoneUtils.PhotoUtils;
 import viewdemo.tumour.com.a51ehealth.view.utils.SPutils.SPUtils;
@@ -213,7 +208,7 @@ public class MainActivity extends BaseActivity {
                 .create(API.class)
                 .Login("wangyong", "111111")
                 .compose(RxSchedulers.io_main())
-                .compose(bindUntilEvent(ActivityEvent.DESTROY))
+
                 .subscribe(new BaseObserver<LoginBean>() {
                     @Override
                     public void onNext(LoginBean loginBean) {
@@ -234,7 +229,7 @@ public class MainActivity extends BaseActivity {
                 .create(API.class)
                 .UpCertificate(UpFileUtils.files2Parts("key", arr, MediaType.parse("image/png")))
                 .compose(RxSchedulers.io_main())
-                .compose(bindUntilEvent(ActivityEvent.DESTROY))
+
                 .subscribe(new BaseObserver<UpImage>() {
                     @Override
                     public void onNext(UpImage upImage) {
@@ -307,7 +302,7 @@ public class MainActivity extends BaseActivity {
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())//指定更新ui的线程，这里指定为Main线程
-                .compose(this.<Boolean>bindUntilEvent(ActivityEvent.DESTROY))
+
                 .subscribe(new BaseObserver<Boolean>() {
                     @Override
                     public void onNext(Boolean aBoolean) {

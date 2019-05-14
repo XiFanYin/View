@@ -5,13 +5,12 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
-
 import com.gyf.barlibrary.ImmersionBar;
-import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import viewdemo.tumour.com.a51ehealth.view.R;
 import viewdemo.tumour.com.a51ehealth.view.app.App;
@@ -21,7 +20,7 @@ import viewdemo.tumour.com.a51ehealth.view.net.utils.NetworkDetector;
 /**
  * Created by yinfeilong on 2017/8/28.
  */
-public abstract class BaseActivity extends RxAppCompatActivity implements View.OnClickListener {
+public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener {
 
     public BaseActivity act;
 

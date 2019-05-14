@@ -3,13 +3,11 @@ package viewdemo.tumour.com.a51ehealth.view.base;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
-import com.trello.rxlifecycle2.components.support.RxFragment;
-
 
 import viewdemo.tumour.com.a51ehealth.view.app.App;
 import viewdemo.tumour.com.a51ehealth.view.net.utils.NetworkDetector;
@@ -19,7 +17,7 @@ import viewdemo.tumour.com.a51ehealth.view.net.utils.NetworkDetector;
  * Created by yinfeilong on 2017/8/28.
  */
 
-public abstract class BaseFragment extends RxFragment {
+public abstract class BaseFragment extends Fragment {
 
     protected View mView;
     protected boolean isViewInitiated; //当前页面是否初始化

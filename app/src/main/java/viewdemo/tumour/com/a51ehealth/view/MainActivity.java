@@ -2,6 +2,7 @@ package viewdemo.tumour.com.a51ehealth.view;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.arch.lifecycle.Lifecycle;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -20,6 +21,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -208,7 +211,7 @@ public class MainActivity extends BaseActivity {
                 .create(API.class)
                 .Login("wangyong", "111111")
                 .compose(RxSchedulers.io_main())
-
+                .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this)))
                 .subscribe(new BaseObserver<LoginBean>() {
                     @Override
                     public void onNext(LoginBean loginBean) {
@@ -229,7 +232,7 @@ public class MainActivity extends BaseActivity {
                 .create(API.class)
                 .UpCertificate(UpFileUtils.files2Parts("key", arr, MediaType.parse("image/png")))
                 .compose(RxSchedulers.io_main())
-
+                .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this)))
                 .subscribe(new BaseObserver<UpImage>() {
                     @Override
                     public void onNext(UpImage upImage) {
@@ -302,7 +305,7 @@ public class MainActivity extends BaseActivity {
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())//指定更新ui的线程，这里指定为Main线程
-
+                .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this)))
                 .subscribe(new BaseObserver<Boolean>() {
                     @Override
                     public void onNext(Boolean aBoolean) {

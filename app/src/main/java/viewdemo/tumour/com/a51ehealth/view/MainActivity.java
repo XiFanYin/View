@@ -305,6 +305,7 @@ public class MainActivity extends BaseActivity {
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())//指定更新ui的线程，这里指定为Main线程
+
                 .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this)))
                 .subscribe(new BaseObserver<Boolean>() {
                     @Override

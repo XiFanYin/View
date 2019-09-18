@@ -38,7 +38,7 @@ public interface API {
 
 
     @Streaming
-    @POST("")
+    @G
     Observable<ResponseBody> downloadFile(@Url String url);
 
 

@@ -11,8 +11,7 @@ import java.util.List;
 import okhttp3.Cookie;
 import viewdemo.tumour.com.a51ehealth.view.app.App;
 import viewdemo.tumour.com.a51ehealth.view.base.BaseActivity;
-import viewdemo.tumour.com.a51ehealth.view.net.cookie.PersistentCookieStore;
-import viewdemo.tumour.com.a51ehealth.view.net.cookie.WebViewUtils;
+
 
 /**
  * Created by Administrator on 2018/4/3.
@@ -56,19 +55,8 @@ public class WebActivity extends BaseActivity {
 
     @Override
     protected void initData(boolean hasNetWork) {
-        PersistentCookieStore cookie = new PersistentCookieStore(App.getApplication());
-        List<Cookie> cookies = cookie.getCookies();
-        for (Cookie cookie2 : cookies) {
-            if (WebViewUtils.syncCookie(url, "JSESSIONID="+cookie2.value())) {
-
-          webView.loadUrl(url);
-
-            } else {
-
-                Log.e("rrrrrrrrrrrrr","设置失败");
-            }
-        }
-
 
     }
+
+
 }

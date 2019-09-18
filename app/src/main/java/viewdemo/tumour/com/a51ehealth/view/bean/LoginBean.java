@@ -7,7 +7,7 @@ package viewdemo.tumour.com.a51ehealth.view.bean;
 public class LoginBean {
 
 
-    /**
+/**
      * data : {"token":"013d27c543c743b9aeb52d6ffec465f4_9967faac0be64fdf90efca5830983ccd_201712281751337772","user":{"xingb":"2","sjhm":"15517108399","zhaop":"http://47.93.136.56:7011//upload/images_from_app/doctor/20171228163552_5522.jpg","ssks":"内分泌","name":"何望","instroduction":"主治内分泌失调引起的疾病","zz":"糖尿病","signature":"013d27c543c743b9aeb52d6ffec465f4","certificate_code":"155353535353533","certificate_photo":"013d27c543c743b9aeb52d6ffec465f4","org_id":"7ea78bc197f44ac299a3522c53f10805","org_name":"枫杨社区服务中心"}}
      * error_code : 0
      * msg : Success

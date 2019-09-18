@@ -44,7 +44,7 @@ public class AvoidOnResult {
 
 
     //跳转：把这个Intent传递到添加的Fragment中去，返回一个Observable对象
-    public Observable<ActivityResultInfo> startForResult(Intent intent) {
+    private Observable<ActivityResultInfo> startForResult(Intent intent) {
         return mAvoidOnResultFragment.startForResult(intent);
     }
 

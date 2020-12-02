@@ -28,11 +28,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.function.Consumer;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.rx_cache2.DynamicKey;
@@ -138,12 +138,11 @@ public class MainActivity extends BaseActivity {
             case R.id.btn3://下载文件
                 new RxPermissions(MainActivity.this)
                         .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        .subscribe(new Consumer<Boolean>() {
+                        .subscribe(new io.reactivex.functions.Consumer<Boolean>() {
                             @Override
                             public void accept(Boolean aBoolean) throws Exception {
-                                if (aBoolean) {
+                                if (aBoolean){
                                     method3();
-
                                 }
                             }
                         });
@@ -247,7 +246,7 @@ public class MainActivity extends BaseActivity {
         RetrofitUtil
                 .getInstance()
                 .create(API.class)
-                .downloadFile("https://dldir1.qq.com/qqfile/qq/PCTIM2.3.0/20979/TIM2.3.0.20979.exe")
+                .downloadFile("http://47.93.136.56:8099//upload/appversion/2da03a417f0fb257038573c9ed00cf0a/902signed.apk")
                 .subscribeOn(Schedulers.io())//指定联网的线程
                 .observeOn(AndroidSchedulers.mainThread())//为了显示进度条，这里指定下边map的线程为Main线程
                 .map(new Function<ResponseBody, ResponseBody>() {
@@ -388,7 +387,7 @@ public class MainActivity extends BaseActivity {
     private void camera() {
         new RxPermissions(this)
                 .request(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .subscribe(new Consumer<Boolean>() {
+                .subscribe(new io.reactivex.functions.Consumer<Boolean>(){
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
                         if (aBoolean) {
@@ -424,7 +423,7 @@ public class MainActivity extends BaseActivity {
 
         new RxPermissions(this)
                 .request(Manifest.permission.READ_EXTERNAL_STORAGE)
-                .subscribe(new Consumer<Boolean>() {
+                .subscribe(new io.reactivex.functions.Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
                         if (aBoolean) {

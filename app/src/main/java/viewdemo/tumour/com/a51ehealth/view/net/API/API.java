@@ -32,7 +32,6 @@ public interface API {
 
 
 
-
     @Multipart
     @POST("uploadDoctorcertificatephoto.html")
     Observable<UpImage> UpCertificate(@Part List<MultipartBody.Part> parts);
